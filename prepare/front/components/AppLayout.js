@@ -17,7 +17,7 @@ const AppLayout = ({children}) => {
                     <Link href="/user"><UserOutlined /></Link>
                 </Menu.Item>
                 <Menu.Item style={{float:'right'}}>
-                    <Link href="/announce"><BellOutlined /></Link>
+                    <BellOutlined />
                 </Menu.Item>
                 <Menu.Item style={{float:'right'}}>
                     <Link href="/searchMap"><FiMap /></Link>
