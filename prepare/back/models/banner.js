@@ -10,11 +10,11 @@ module.exports = (sequelize, DataType) => {
         },
     }, {
         charset: 'utf8',
-        collate: 'utf_general_ci',
+        collate: 'utf8_general_ci',
     });
     Banner.associate = (db) => {
-        db.Banner.belongsTo(db.User);
-        db.Banner.belongsTo(db.MyRoute);
+        db.Banner.belongsToMany(db.Admin, { through: 'AdminBanner'});
+        db.Banner.belongsToMany(db.MyRoute, { through: 'MyRouteBanner'});
     }
     return Banner;
 }

@@ -1,7 +1,11 @@
 module.exports = (sequelize, DataTypes) => {
     const MyRoute = sequelize.define('MyRoute', {
+        title: {
+            type: DataTypes.STRING(30),
+            allowNull: false,
+        },
         content: {
-            type: DataTypes.Text,
+            type: DataTypes.TEXT,
             allowNull: false,
         },
     },{
@@ -10,12 +14,15 @@ module.exports = (sequelize, DataTypes) => {
     });
     MyRoute.associate = (db) => {
         db.MyRoute.belongsTo(db.User);
-        db.MyRoute.belongsToMany(db.Tag, { thorough: 'MyRouteTag '});
         db.MyRoute.hasMany(db.Comment);
-        db.MyRoute.hasMany(db.MyRouteFile);
-        db.MyRoute.belongsToMany(db.User, { thorough: 'Like', as: 'Likers'});
-        db.MyRoute.belongsTo(db.MyRoute, { as: 'ReMyRoute'});
-        db.MyRoute.hasMany(db.Banner);
+        db.MyRoute.belongsToMany(db.Scrap, { through: 'MyRouteScrap' });
+        db.MyRoute.belongsToMany(db.Calendar, { through: 'MyRouteCalendar' });
+        db.MyRoute.belongsToMany(db.MyRouteDetail, { through: 'MyRouteMyRouteDetail'});
+        db.MyRoute.belongsToMany(db.MyRouteFile, { through: 'MyRouteMyRouteFile'});
+        db.MyRoute.belongsTo(db.Banner, { through: 'MyRouteBanner'});
+        db.MyRoute.belongsToMany(db.Tag, { through: 'MyRouteTag'});
+        db.MyRoute.belongsTo(db.MyRoute, { as: 'ReviewMyRoute' });
+        db.MyRoute.belongsToMany(db.User, { through: 'Like', as: 'Likers'});
     };
     return MyRoute;
 }

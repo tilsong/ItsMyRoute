@@ -40,7 +40,7 @@ const dummyFile = {
     fileRoute: '../route6.jpg'
 }
 
-const myRouteFile = (state = initialState, action) => {
+const reducer = (state = initialState, action) => {
     switch (action.type) {
         case ADD_FILE: {
             return {
@@ -56,4 +56,4 @@ const myRouteFile = (state = initialState, action) => {
     }
 };
 
-export default myRouteFile;
+export default reducer;

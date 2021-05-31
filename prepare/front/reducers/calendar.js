@@ -51,7 +51,7 @@ const dummyC =  {
     detail: '',
 }
 
-const calendar = (state=initialState, action) => {
+const reducer = (state=initialState, action) => {
     switch (action.type) {
         case CALENDAR : {
             return {
@@ -67,4 +67,4 @@ const calendar = (state=initialState, action) => {
     }
 }
 
-export default calendar;
+export default reducer;

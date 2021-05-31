@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
     const MyRouteFile = sequelize.define('MyRouteFile', {
-        src: {
+        src:{
             type: DataTypes.STRING(200),
             allowNull: false,
         },
@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
         collate: 'utf8_general_ci',
     });
     MyRouteFile.associate = (db) => {
-        db.MyRouteFile.belongsTo(db.MyRoute);
+        db.MyRouteFile.belongsToMany(db.MyRoute, { through: 'MyRouteMyRouteFile'});
     };
     return MyRouteFile;
 }

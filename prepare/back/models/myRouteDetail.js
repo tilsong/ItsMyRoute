@@ -1,31 +1,31 @@
-module.exports = (sequelize, DataType) => {
-    const MyRouteDetail = sequelize.define('myRouteDetail', {
+module.exports = (sequelize, DataTypes) => {
+    const MyRouteDetail = sequelize.define('MyRouteDetail', {
         locationValue: {
-            type: DataType.STRING(50),
+            type: DataTypes.STRING(30),
             allowNull: false,
         },
         locationName :{
-            type: DataType.STRING(30),
+            type: DataTypes.STRING(30),
             allowNull: false,
         },
         routeOrder: {
-            type: DataType.INTEGER,
+            type: DataTypes.STRING(10),
             allowNull: false,
         },
         requiredMoney: {
-            type: DataType.DOUBLE,
+            type: DataTypes.STRING(10),
             allowNull: false,
         },
         requiredTime: {
-            type: DataType.DATE,
+            type: DataTypes.STRING(10),
             allowNull: false,
         }
     }, {
         charset: 'utf8',
-        collate: 'utf_general_ci',
+        collate: 'utf8_general_ci',
     });
     MyRouteDetail.associate = (db) => {
-        db.MyRouteDetail.belongsTo(db.MyRoute);
+        db.MyRouteDetail.belongsToMany(db.MyRoute, { through: 'MyRouteMyRouteDetail'});
     }
     return MyRouteDetail;
 }

@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
         collate: 'utf8_general_ci',
     });
     Admin.associate = (db) => {
-        db.Admin.hasMany(db.Banner);
+        db.Admin.belongsToMany(db.Banner, { through: 'AdminBanner'});
     }
     return Admin;
 }

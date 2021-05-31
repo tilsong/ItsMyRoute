@@ -108,7 +108,7 @@ const dummyDetail = {
     requiredTime: 49,
 }
 
-const myRouteDetail = (state = initialState, action) => {
+const reducer = (state = initialState, action) => {
     switch (action.type) {
         case ADD_DETAIL : {
             return {
@@ -124,4 +124,4 @@ const myRouteDetail = (state = initialState, action) => {
     }
 };
 
-export default myRouteDetail;
+export default reducer;

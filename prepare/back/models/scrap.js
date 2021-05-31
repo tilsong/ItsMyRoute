@@ -10,10 +10,10 @@ module.exports = (sequelize, DataType) => {
         },
     }, {
         charset: 'utf8',
-        collate: 'utf_general_ci',
+        collate: 'utf8_general_ci',
     });
     Scrap.associate = (db) => {
-        db.Scrap.belongsTo(db.User);
-        db.Banner.belongsTo(db.MyRoute);
-    }
+        db.Scrap.belongsToMany(db.User, { through: 'MyRouteScrap' });
+    };
+    return Scrap;
 }

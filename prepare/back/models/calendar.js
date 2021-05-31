@@ -6,7 +6,7 @@ module.exports = (sequelize, DataType) => {
         },
         detail: {
             type: DataType.STRING(50),
-            allowNull: false,
+            allowNull: true,
         },
         calendarDate: {
             type: DataType.DATE,
@@ -14,10 +14,12 @@ module.exports = (sequelize, DataType) => {
         }
     }, {
         charset: 'utf8',
-        collate: 'utf_general_ci',
+        collate: 'utf8_general_ci',
     });
     Calendar.associate = (db) => {
-        db.Calendar.belongsTo(db.User);
-        db.Calendar.belongsTo(db.myRouteNum);
+        db.Calendar.belongsToMany(db.User, { through: 'UserCalendar'});
+        db.Calendar.belongsToMany(db.MyRoute, { through: 'MyRouteCalendar'});
     }
+    
+    return Calendar;
 }

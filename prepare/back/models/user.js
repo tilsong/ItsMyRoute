@@ -7,27 +7,31 @@ module.exports = (sequelize, DataTypes) => {
         },
         nickname: {
             type: DataTypes.STRING(30),
-            allowNull: false,
+            allowNull: true,
         },
         password: {
             type: DataTypes.STRING(100),
-            allowNull: false,
+            allowNull: true,
         },
         phoneNumber: {
             type: DataTypes.STRING(20),
-            allowNull: false,
+            allowNull: true,
         },
         active: {
-            type: DataTypes.BOOLEAN,
-            allowNull: false,
+            type: DataTypes.BOOLEAN(),
+            allowNull: true,
         },
-        socialStatus: {
-            type: DataTypes.STRING(20),
-            allowNull: false,
+        snsId: {
+            type: DataTypes.STRING(30),
+            allowNull: true,
         },
         profile: {
             type: DataTypes.STRING(200),
-            allowNull: false,
+            allowNull: true,
+        },
+        provider: {
+            type: DataTypes.STRING(30),
+            allowNull: true,
         }
     }, {
         charset: 'utf8',
@@ -36,6 +40,9 @@ module.exports = (sequelize, DataTypes) => {
     User.associate = (db) => {
         db.User.hasMany(db.MyRoute);
         db.User.hasMany(db.Comment);
+        db.User.belongsToMany(db.Chat, { through: 'UserChat' });
+        db.User.belongsToMany(db.Scrap, { through: 'UserScrap'});
+        db.User.belongsToMany(db.Calendar, { through: 'UserCalendar'});
         db.User.belongsToMany(db.MyRoute, { through: 'Like', as: 'Liked'});
         db.User.belongsToMany(db.User, { through: 'Follow', as: 'Followers', foreignKey: 'FollowingId' });
         db.User.belongsToMany(db.User, { through: 'Follow', as: 'Followings', foreignKey: 'FollowerId' });

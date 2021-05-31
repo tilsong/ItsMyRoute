@@ -1,159 +1,184 @@
-export const initialState ={
-    myRoute: [
-        {
-            myRouteNum: 13,
-            userNum: 3,
-            MyRouteName: '강남 맛집탐방',
-            writingDate: '2021-04-12 9:00',
-            updatedDate: '',
-            content: 'qweryuioasdfhjklqweryu',
-            userPublish: true,
-            adminPublish: true,
-            heart: [
-                {userNum: 3},
-                {userNum: 5},
-                {userNum: 6},
-            ]
-        },
-        {
-            myRouteNum: 35,
-            userNum: 5,
-            MyRouteName: '문득 혼밥',
-            writingDate: '2021-04-30 9:00',
-            updatedDate: '2021-05-01',
-            content: 'qweryuioasdfhjㅁㄴㅇㄹklqweryu',
-            userPublish: true,
-            adminPublish: true,
-            heart: [
-                {userNum: 3},
-                {userNum: 5},
-                {userNum: 6},
-            ],
-        },
-        {
-            myRouteNum: 37,
-            userNum: 1,
-            MyRouteName: '데이트 인 송파',
-            writingDate: '2021-05-01 9:00',
-            updatedDate: '',
-            content: 'qwerlqweryu',
-            userPublish: true,
-            adminPublish: true,
-            heart: [
-                {userNum: 3},
-                {userNum: 5},
-                {userNum: 6},
-            ],
-        },
-        {
-            myRouteNum: 67,
-            userNum: 3,
-            MyRouteName: '오늘의 걸음',
-            writingDate: '2021-05-03 9:00',
-            updatedDate: '',
-            content: 'ㅅㄱㅈㄷqweryu',
-            userPublish: true,
-            adminPublish: false,
-            heart: [
-                {userNum: 3},
-                {userNum: 5},
-                {userNum: 6},
-            ],
-        },
-        // {
-        //     myRouteNum: 98,
-        //     userNum: 5,
-        //     MyRouteName: '여기, 길을 걷다',
-        //     writingDate: '2021-05-06 9:00',
-        //     updatedDate: '2021-05-09',
-        //     content: 'qweryuioasdfhjㄹㄴㅁㅇklqweryu',
-        //     userPublish: true,
-        //     adminPublish: true,
-        //     heart: [
-        //         {userNum: 3},
-        //         {userNum: 5},
-        //         {userNum: 6},
-        //     ],
-        // },
-        // {
-        //     myRouteNum: 145,
-        //     userNum: 7,
-        //     MyRouteName: '석촌 레이크',
-        //     writingDate: '2021-05-06 9:00',
-        //     updatedDate: '',
-        //     content: 'qweryuioaqweryu',
-        //     userPublish: false,
-        //     adminPublish: true,
-        //     heart: [
-        //         {userNum: 3},
-        //         {userNum: 5},
-        //         {userNum: 6},
-        //     ],
-        // },
-        // {
-        //     myRouteNum: 234,
-        //     userNum: 5,
-        //     MyRouteName: '오랜만이야',
-        //     writingDate: '2021-05-06 9:00',
-        //     updatedDate: '',
-        //     content: 'hjklqweryu',
-        //     userPublish: true,
-        //     adminPublish: true,
-        //     heart: [
-        //         {userNum: 3},
-        //         {userNum: 5},
-        //         {userNum: 6},
-        //     ],
-        // },
-        // {
-        //     myRouteNum: 646,
-        //     userNum: 4,
-        //     MyRouteName: '일상 루트',
-        //     writingDate: '2021-05-10 9:00',
-        //     updatedDate: '2021-05-13',
-        //     content: 'klqweryu',
-        //     userPublish: true,
-        //     adminPublish: true,
-        //     heart: [
-        //         {userNum: 3},
-        //         {userNum: 5},
-        //         {userNum: 6},
-        //     ],
-        // },
-    ],
-}
+import produce from 'immer';
 
-const ADD_MYROUTE= 'ADD_MYROUTE';
-
-export const addMyRoute = {
-    type: ADD_MYROUTE,
-}
-
-const dummyMyRoute = {
-    myRouteNum: 806,
-    userNum: 6,
-    MyRouteName: '루트!!',
-    writingDate: '2021-05-17 9:00',
-    updatedDate: '',
-    content: 'klqwqewreryu',
-    userPublish: true,
-    adminPublish: true,
-}
-
-const myRoute = (state = initialState, action) => {
-    switch(action.type) {
-        case ADD_MYROUTE: {
-            return {
-                ...state,
-                myRoute: [dummyMyRoute, ...state.myRoute],
-            }
-        }
-        default: {
-            return {
-                ...state,
-            };
-        }
-    }
+export const initialState = {
+  tagList: ['err'],
+  todayMyroute: [],
+  myRoutes: [],
+  imagePaths: [],
+  hasMoreMyRoutes: true,
+  loadTodayRouteLoading: false,
+  loadTodayRouteDone: false,
+  loadTodayRouteError: null,
+  loadMyRoutesLoading: false,
+  loadMyRoutesDone: false,
+  loadMyRoutesError: null,
+  addMyRouteLoading: false,
+  addMyRouteDone: false,
+  addMyRoutetError: null,
+  uploadImagesLoading: false,
+  uploadImagesDone: false,
+  uploadImagesError: null,
+  likeMyRouteLoading: false,
+  likeMyRouteDone: false,
+  likeMyRouteError: null,
+  unLikeMyRouteLoading: false,
+  unLikeMyRouteDone: false,
+  unLikeMyRouteError: null,
+  addCommentLoading: false,
+  addCommentDone: false,
+  addCommentError: null,
 };
 
-export default myRoute;
+export const PLUS_TAG = 'PLUS_TAG';
+export const DELETE_TAG = 'DELETE_TAG';
+
+export const LOAD_TODAYROUTE_REQUEST = 'LOAD_TODAYROUTE_REQUEST';
+export const LOAD_TODAYROUTE_SUCCESS = 'LOAD_TODAYROUTE_SUCCESS';
+export const LOAD_TODAYROUTE_FAILURE = 'LOAD_TODAYROUTE_FAILURE';
+
+export const LOAD_MYROUTES_REQUEST = 'LOAD_MYROUTES_REQUEST';
+export const LOAD_MYROUTES_SUCCESS = 'LOAD_MYROUTES_SUCCESS';
+export const LOAD_MYROUTES_FAILURE = 'LOAD_MYROUTES_FAILURE';
+
+export const ADD_MYROUTE_REQUEST = 'ADD_MYROUTE_REQUEST';
+export const ADD_MYROUTE_SUCCESS = 'ADD_MYROUTE_SUCCESS';
+export const ADD_MYROUTE_FAILURE = 'ADD_MYROUTE_FAILURE';
+
+export const UPLOAD_IMAGES_REQUEST = 'UPLOAD_IMAGES_REQUEST';
+export const UPLOAD_IMAGES_SUCCESS = 'UPLOAD_IMAGES_SUCCESS';
+export const UPLOAD_IMAGES_FAILURE = 'UPLOAD_IMAGES_FAILURE';
+
+export const LIKE_MYROUTE_REQUEST = 'LIKE_MYROUTE_REQUEST';
+export const LIKE_MYROUTE_SUCCESS = 'LIKE_MYROUTE_SUCCESS';
+export const LIKE_MYROUTE_FAILURE = 'LIKE_MYROUTE_FAILURE';
+
+export const UNLIKE_MYROUTE_REQUEST = 'UNLIKE_MYROUTE_REQUEST';
+export const UNLIKE_MYROUTE_SUCCESS = 'UNLIKE_MYROUTE_SUCCESS';
+export const UNLIKE_MYROUTE_FAILURE = 'UNLIKE_MYROUTE_FAILURE';
+
+export const ADD_COMMENT_REQUEST = 'ADD_COMMENT_REQUEST';
+export const ADD_COMMENT_SUCCESS = 'ADD_COMMENT_SUCCESS';
+export const ADD_COMMENT_FAILURE = 'ADD_COMMENT_FAILURE';
+
+const reducer = (state = initialState, action) => produce(state, (draft) => {
+  switch (action.type) {
+    case PLUS_TAG:
+      draft.tagList = draft.tagList.concat(action.data);
+      break;
+    case DELETE_TAG:
+      draft.tagList = draft.tagList.filter((v) => v.tag !== action.data.tag);
+      break;
+    case LOAD_TODAYROUTE_REQUEST:
+      draft.loadTodayRouteLoading = true;
+      draft.loadTodayRouteDone = false;
+      draft.loadTodayRouteError = null;
+      break;
+    case LOAD_TODAYROUTE_SUCCESS:
+      draft.loadTodayRouteLoading = false;
+      draft.loadTodayRouteDone = true;
+      draft.todayMyroute = draft.todayMyroute.concat(action.data);
+      break;
+    case LOAD_TODAYROUTE_FAILURE:
+      draft.loadTodayRouteLoading = false;
+      draft.loadTodayRouteError = action.error;
+      break;
+    case LOAD_MYROUTES_REQUEST:
+      draft.loadMyRoutesLoading = true;
+      draft.loadMyRoutesDone = false;
+      draft.loadMyRoutesError = null;
+      break;
+    case LOAD_MYROUTES_SUCCESS:
+      draft.loadMyRoutesLoading = false;
+      draft.loadMyRoutesDone = true;
+      draft.myRoutes = draft.myRoutes.concat(action.data);
+      draft.hasMoreMyRoutes = draft.myRoutes.length === 10;
+      break;
+    case LOAD_MYROUTES_FAILURE:
+      draft.loadMyRoutesLoading = false;
+      draft.loadMyRoutesError = action.error;
+      break;
+    case ADD_MYROUTE_REQUEST:
+      draft.addMyRouteLoading = true;
+      draft.addMyRouteDone = false;
+      draft.addMyRoutetError = null;
+      break;
+    case ADD_MYROUTE_SUCCESS:
+      draft.addMyRouteLoading = false;
+      draft.addMyRouteDone = true;
+      draft.myRoutes.unshift(action.data);
+      draft.imagePaths = [];
+      break;
+    case ADD_MYROUTE_FAILURE:
+      draft.addMyRouteLoading = false;
+      draft.addMyRoutetError = action.error;
+      break;
+    case UPLOAD_IMAGES_REQUEST:
+      draft.uploadImagesLoading = true;
+      draft.uploadImagesDone = false;
+      draft.uploadImagesError = null;
+      break;
+    case UPLOAD_IMAGES_SUCCESS:
+      draft.imagePaths = action.data;
+      draft.uploadImagesLoading = false;
+      draft.uploadImagesDone = true;
+      break;
+    case UPLOAD_IMAGES_FAILURE:
+      draft.uploadImagesLoading = false;
+      draft.uploadImagesError = action.error;
+      break;
+    case LIKE_MYROUTE_REQUEST:
+      draft.likeMyRouteLoading = true;
+      draft.likeMyRouteDone = false;
+      draft.likeMyRouteError = null;
+      break;
+    case LIKE_MYROUTE_SUCCESS: {
+      const myRoute = draft.myRoutes.find((v) => v.id === action.data.MyRouteId);
+      myRoute.Likers.push({ id: action.data.UserId });
+      draft.likeMyRouteDone = false;
+      draft.likeMyRouteDone = true;
+      break;
+    }
+    case LIKE_MYROUTE_FAILURE:
+      draft.likeMyRouteLoading = false;
+      draft.likeMyRouteError = action.error;
+      break;
+    case UNLIKE_MYROUTE_REQUEST:
+      draft.unLikeMyRouteLoading = true;
+      draft.unLikeMyRouteDone = false;
+      draft.unLikeMyRouteError = null;
+      break;
+    case UNLIKE_MYROUTE_SUCCESS: {
+      const myRoute = draft.myRoutes.find((v) => v.id === action.data.MyRouteId);
+      myRoute.Likers = myRoute.Likers.filter((v) => v.id !== action.data.UserId);
+      draft.unLikeMyRouteLoading = false;
+      draft.unLikeMyRouteDone = true;
+      break;
+    }
+    case UNLIKE_MYROUTE_FAILURE:
+      draft.unLikeMyRouteLoading = false;
+      draft.unLikeMyRouteError = action.error;
+      break;
+    case ADD_COMMENT_REQUEST:
+      draft.addCommentLoading = true;
+      draft.addCommentDone = false;
+      draft.addCommentError = null;
+      break;
+    case ADD_COMMENT_SUCCESS: {
+      console.log('sfaafdfaskadfaskl');
+      console.log(action.data);
+      const myRoute = draft.myRoutes.find((v) => v.id === action.data.MyRouteId);
+      myRoute.Comments.unshift(action.data);
+      draft.addCommentLoading = false;
+      draft.addCommentDone = true;
+      break;
+    }
+    case ADD_COMMENT_FAILURE:
+      draft.addCommentLoading = false;
+      draft.addCommentError = action.error;
+      break;
+    default:
+      break;
+  }
+});
+
+export default reducer;

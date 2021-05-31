@@ -67,7 +67,7 @@ const dummyA = {
 
 }
 
-const follow = (state = initialState, action) => {
+const reducer = (state = initialState, action) => {
     switch (action.type) {
         case FOLLOW :{
             return {
@@ -83,4 +83,4 @@ const follow = (state = initialState, action) => {
     }
 };
 
-export default follow;
+export default reducer;

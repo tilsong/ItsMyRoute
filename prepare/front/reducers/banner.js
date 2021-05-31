@@ -51,7 +51,7 @@ const dummyBanner = {
     deadlineDate: '2021-05-16',
 }
 
-export const banner = (state = initialState, action) => {
+export const reducer = (state = initialState, action) => {
     switch (action.type) {
         case ADD_BANNER: {
             return {
@@ -67,4 +67,4 @@ export const banner = (state = initialState, action) => {
     }
 }
 
-export default banner;
+export default reducer;

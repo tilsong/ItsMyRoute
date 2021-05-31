@@ -52,7 +52,7 @@ const dummyComment = {
     updatedDate: '',
 }
 
-const comment = (state = initialState, action) => {
+const reducer = (state = initialState, action) => {
     switch (action.type) {
         case ADD_COMMENT: {
             return {
@@ -68,4 +68,4 @@ const comment = (state = initialState, action) => {
     }
 };
 
-export default comment;
+export default reducer;

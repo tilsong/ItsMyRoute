@@ -1,7 +1,8 @@
-import { createWrapper } from 'next-redux-wrapper';
 import { createStore, applyMiddleware, compose } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';//크롬 개발자 도구에서 추적 가능
 import createSagaMiddleware from 'redux-saga';
+import { createWrapper } from 'next-redux-wrapper';
+import { composeWithDevTools } from 'redux-devtools-extension';//크롬 개발자 도구에서 추적 가능
+
 import reducer from '../reducers';
 import rootSaga from '../sagas';
 

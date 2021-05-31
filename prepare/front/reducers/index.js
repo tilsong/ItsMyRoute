@@ -1,38 +1,37 @@
-import {HYDRATE} from 'next-redux-wrapper';
-import user from './user';
-import dummy from './dummy';
-import admin from './admin';
-import banner from './banner';
-import calendar from './calendar';
-import follow from './follow';
-import scrap from './scrap';
-import comment from './comment';
-import myRoute from './myRoute';
-import myRouteDetail from './myRouteDetail';
-import myRouteFile from './myRouteFile';
+import { HYDRATE } from 'next-redux-wrapper';
 import { combineReducers } from 'redux';
 
+import user from './user';
+import myRoute from './myRoute';
+// import admin from './admin';
+// import banner from './banner';
+// import calendar from './calendar';
+// import follow from './follow';
+// import scrap from './scrap';
+// import comment from './comment';
+// import myRouteDetail from './myRouteDetail';
+// import myRouteFile from './myRouteFile';
+
 const rootReducer = combineReducers({
-    index: (state = {}, action) => {
-        switch (action.type) {
-            case HYDRATE:
-                console.log('HYDRATE', action);
-                return { ...state, ...action.payload};
-            default:
-                return state;
-        }
-    },    
-    user,
-    dummy,
-    admin,
-    banner,
-    calendar,
-    follow,
-    scrap,
-    comment,
-    myRoute,
-    myRouteDetail,
-    myRouteFile,
+  index: (state = {}, action) => {
+    switch (action.type) {
+      case HYDRATE:
+        console.log('HYDRATE', action);
+        return { ...state, ...action.payload };
+      default:
+        return state;
+    }
+  },
+  user,
+  myRoute,
+  // admin,
+  // banner,
+  // calendar,
+  // follow,
+  // scrap,
+  // comment,
+  // myRouteDetail,
+  // myRouteFile,
 });
 
 export default rootReducer;

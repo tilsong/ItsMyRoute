@@ -19,7 +19,7 @@ export const adminAction = () => {
     }
 }
 
-const admin = (state = initialState, action) => {
+const reducer = (state = initialState, action) => {
     switch (action.type) {
         case  ADMIN  : 
             return {
@@ -30,5 +30,5 @@ const admin = (state = initialState, action) => {
     }
 }
 
-export default admin;
+export default reducer;
 
