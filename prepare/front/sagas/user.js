@@ -68,9 +68,7 @@ function signUpAPI(data) {
 
 function* signUp(action) {
   try {
-    console.log('asdf');
     const result = yield call(signUpAPI, action.data);
-    console.log('zxcv');
     console.log(result);
     yield put({
       type: SIGN_UP_SUCCESS,
@@ -97,7 +95,6 @@ function* watchLogOut() {
 }
 
 function* watchSignUp() {
-  console.log('gggg');
   yield takeEvery(SIGN_UP_REQUEST, signUp);
 }
 

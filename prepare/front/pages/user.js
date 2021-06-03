@@ -11,6 +11,7 @@ const user = () => (
     </Head>
     <AppLayout>
       <div style={{ fontSize: '30px' }}><Avatar size={150} src="https://cdn.pixabay.com/photo/2020/06/30/22/34/dog-5357794_1280.jpg" />유저 이름</div>
+
     </AppLayout>
   </>
 );

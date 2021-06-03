@@ -3,6 +3,7 @@ import { combineReducers } from 'redux';
 
 import user from './user';
 import myRoute from './myRoute';
+import map from './map';
 // import admin from './admin';
 // import banner from './banner';
 // import calendar from './calendar';
@@ -24,6 +25,7 @@ const rootReducer = combineReducers({
   },
   user,
   myRoute,
+  map,
   // admin,
   // banner,
   // calendar,
