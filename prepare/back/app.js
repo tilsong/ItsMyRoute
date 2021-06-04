@@ -10,6 +10,7 @@ const userRouter = require('./routes/user');
 const myRoutesRouter = require('./routes/myRoutes');
 const myRouteRouter = require('./routes/myRoute');
 const authRouter = require('./routes/auth');
+const mapRouter = require('./routes/map');
 
 const db = require('./models');
 const passportConfig = require('./passport');
@@ -27,9 +28,21 @@ db.sequelize.sync()
 passportConfig();
 
 app.use(morgan('dev'));
+
+var allowedOrigins = ['http://localhost:3000',
+                      'https://www.googleapis.com/'];
 app.use(cors({
-    origin: 'http://localhost:3000',
-    credentials: true,
+  origin: function(origin, callback){
+
+    if(!origin) return callback(null, true);
+    if(allowedOrigins.indexOf(origin) === -1){
+      var msg = 'The CORS policy for this site does not ' +
+                'allow access from the specified Origin.';
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  },
+  credentials: true,
 }));
 
 app.use(express.json());
@@ -48,8 +61,8 @@ app.use(passport.session());
 app.use('/user', userRouter);
 app.use('/myRoutes', myRoutesRouter);
 app.use('/myRoute', myRouteRouter);
-
 app.use('/auth', authRouter);
+app.use('/map', mapRouter);
 
 app.listen(3065, () => {
     console.log('서버 실행 중');

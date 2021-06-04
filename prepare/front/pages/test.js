@@ -1,7 +1,6 @@
-import React, { useCallback } from 'react';
-import Router from 'next/router';
+import React from 'react';
 import AppLayout from '../components/AppLayout';
-import Test from '../components/test';
+import Test from '../components/apitest';
 
 const TEST = () => {
   const a = 1;

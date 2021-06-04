@@ -26,14 +26,6 @@ const rootReducer = combineReducers({
   user,
   myRoute,
   map,
-  // admin,
-  // banner,
-  // calendar,
-  // follow,
-  // scrap,
-  // comment,
-  // myRouteDetail,
-  // myRouteFile,
 });
 
 export default rootReducer;

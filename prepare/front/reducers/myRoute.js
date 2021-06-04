@@ -164,8 +164,6 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       draft.addCommentError = null;
       break;
     case ADD_COMMENT_SUCCESS: {
-      console.log('sfaafdfaskadfaskl');
-      console.log(action.data);
       const myRoute = draft.myRoutes.find((v) => v.id === action.data.MyRouteId);
       myRoute.Comments.unshift(action.data);
       draft.addCommentLoading = false;

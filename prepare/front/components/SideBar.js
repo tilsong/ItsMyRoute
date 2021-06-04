@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Input } from 'antd';
 import { VscSearch } from 'react-icons/vsc';
-import { BiCurrentLocation } from 'react-icons/bi';
 import styled from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
 import useInput from '../hooks/useInput';
 import SideBarRouteList from './SideBarRouteList';
 import CurrentLocation from './CurrentLocation';
@@ -15,6 +15,7 @@ const BasicSide = styled.div`
 
 const SideBar = () => {
   const [searchText, onChangeSearchText] = useInput('');
+  const { currentLocation } = useSelector((state) => state.map);
 
   return (
     <>
@@ -24,7 +25,7 @@ const SideBar = () => {
           태그들 있는 자리
         </BasicSide>
         <BasicSide>
-          <CurrentLocation />
+          {currentLocation && <CurrentLocation currentLocation={currentLocation} />}
         </BasicSide>
         <SideBarRouteList />
       </div>

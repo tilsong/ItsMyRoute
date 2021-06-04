@@ -2,6 +2,7 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const request = require('request');
 
 const { MyRoute, MyRouteDatail, MyRouteFile, Comment, User, tag } = require('../models');
 const { isLoggedIn } = require('./middlewares');
