@@ -66,19 +66,7 @@
 +@= todayRoute 형식 postcard의 코멘트 나열 부분 참고할 것.
 
 -------------0530 1630-------------------
-바로 카페로 와서 공부를 했어야 했는데 여러 생각이 들어 가지 않았다.
-드랍탑을 가려는데 방이시장이 보이고, 그 위에 있는 아파트가 보였다.
-날씨가 좋아졌는지..
-이전, 피아노학원을 다니면서 시장을 자유자재로 누비던 시절이 떠올랐다.
-그래서 나도 모르게 길을 건너고, 시장을 걸었다. 
-아보카도가 있어 사려고 했는데, 현금이 없었다.
-현금 뽑으려고 농협 atm을 찾아갔는데 아뿔사, 카드도 없었다.
-기프티콘 밖에 없네? 그 와중에 휴대폰 배터리는 3%.
-안 급한 척 허겁지겁 하정우가 운영한다는 스타벅스로 갔다.
-가서 배터리 확인하니 2%.
-간신히 주문 완료. 아아는 먹기 싫어서 히비스커스 블렌드로 시켰다.
-순진 말고, 순수의 시절을 오랜 시간 생각했다.
-사람을 사람으로 보는, 알아서가 아니라, 그냥 그럴 수 있었던 그 때의 나를..
+
 -----------------------------------------
 
 오늘 하고 싶은 것들
@@ -279,4 +267,62 @@ navigator과 비교해볼 것!
  3. 업로드(editor tool) 부분 툴 가지고 시작하기
     - 제목, 태그, 글 작성 부분 만들기
     - 지도 부분 띄우고, 클릭 시 나오는 것 이전 ui까지 완성하기
+
+
+
+import React, { useCallback, useEffect } from 'react';
+import { GoogleApiWrapper, InfoWindow, Map, Marker } from 'google-maps-react';
+import { useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
+import * as config from '../config';
+
+const FullMap = (props) => {
+  const { currentLocation } = useSelector((state) => state.map);
+  useEffect(() => {
+    console.log(props);
+  }, []);
+  const onEventCheck = (props) => {
+    console.log(props);
+  };
+
+  return (
+    <div>
+      { currentLocation
+      && (
+      <div>
+        <Map
+          google={props.google}
+          onClick={onEventCheck}
+          style={{ width: '100%', height: '100%', position: 'relative' }}
+          className="map"
+          center={{
+            lat: currentLocation.lat,
+            lng: currentLocation.lng,
+          }}
+          initialCenter={{
+            lat: currentLocation.lat,
+            lng: currentLocation.lng,
+          }}
+          zoom={14}
+        />
+
+      </div>
+      )}
+    </div>
+  );
+};
+
+GoogleApiWrapper.propTypes = {
+  props: PropTypes.shape({
+    google: PropTypes.object,
+    zoom: PropTypes.number,
+    center: PropTypes.object,
+    initialCenter: PropTypes.object,
+  }).isRequired,
+};
+
+export default GoogleApiWrapper({
+  apiKey: config.GOOGLEMAP_APIKEY,
+})(FullMap);
+
 
