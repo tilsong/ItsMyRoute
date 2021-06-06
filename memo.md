@@ -162,17 +162,121 @@
 1. 좌표-> 주소 번역
 2. (가능하면) navigator 말고 구글 api로 현재 위치 받기
 
-1. geocode로 위경도를 주소로 교체
-2. geolocation으로 현재 위치 기능 교체 
-3. 주소 검색해서 해당 주소로 이동
-4. 위치 명 검색해서 해당 위치로 이동
-
 -------------0603 0930-----------------------
 1. geocode로 위경도를 주소로 교체
 2. geolocation으로 현재 위치 기능 교체 
 3. 주소 검색해서 해당 주소로 이동
 4. 위치 명 검색해서 해당 위치로 이동
 
------여기까지 15시 전에 완료할 것.
-
 -> 그 다음 진행? - 업로드 페이지! => 에디터와 지도 사용!
+
+
+1. geocode로 위경도를 주소로 교체 - 완료
+   -> 걱정되는 점: 위치가 정확하지 않다. 
+                  그리고 지번주소가 1301-12 이런식으로 왔는데 실제 주소는 1301 에서 끝난다. 뭘까?
+
+2. geolocation으로 현재 위치 기능 교체 //  23시
+3. 주소 검색해서 해당 주소로 이동 
+4. 위치 명 검색해서 해당 위치로 이동 
+
+geocode의 response 에서 쓸만한 것 
+response.
+  results[0].address_components[0].long_name   => 지번 주소
+                               [1].long_name   => 동
+                               [2].long_name   => 구
+                               [3].long_name   => 시
+
+sublocality_level_4 ~~대로
+sublocality_level_2 ~~동
+sublocality_level_1 ~~구
+administrative_area_level_1 ~~시
+   => 썼다가 지운 코드
+          if(response.results[0].address_components[1].types[2] === "sublocality_level_4") { // ~대로
+            road = response.results[0].address_components[1].long_name;
+            console.log(road);
+          }
+          if(response.results[0].address_components[2].types[2] === "sublocality_level_2") { // ~동
+            dong = response.results[0].address_components[2].long_name;
+            console.log(dong);
+          }
+          if(response.results[0].address_components[3].types[2] === "sublocality_level_1") { // ~구
+            goo = response.results[0].address_components[2].long_name;
+            console.log(goo);
+          }
+          if(response.results[0].address_components[3].types[2] === "administrative_area_level_1") { // ~시
+            city = response.results[0].address_components[3].long_name;
+            console.log(city);
+          }
+
+-----------------------
+
+
+----------------0604 1400----------------
+1. 지도 api 쉽지 않다. 오늘까지 해보고, 진전이 없으면 다른 것부터 할 것임. ex) 에디터 툴 / 혹은 아예 다른 테마 ex) 위치 기반 sns 
+
+2. 현재 안되는 것.  
+  
+  1. 구글의 api 받는 것 자체가 안된다.
+     요인 =>
+     cors 오류 때문 -> 그냥 지도 api는 된다. 스택오버플로에서는 googlemap js api는 가능한데 다른 것은 cors 오류가 난다고 한다.
+     만약 실제로 그렇다면 아예 api 자체를 바꾸어야 한다. 확인할 것.
+  
+  2. 쓰고 있는 라이브러리 google-maps-react의 사용법이 정확하지 않아 사용하기 어려움.
+     요인 => 
+     주석이 엉망이다. 기껏 만들고 왜 설명을 제대로 하지 않는 것일까? 확인할 것.
+
+3. 그래서 오늘 할 것. 
+   1) google map api에서 원하는 것(geolocation, 그 외 googlemap api)를 가져올 수 있는지 혹은 못 가져오는지 확인하기.
+   2) google-maps-react 사용법 찾아보기
+
+-----------now-----------
+1) google map api에서 원하는 것(geolocation, 그 외 googlemap api)를 가져올 수 있는지 혹은 못 가져오는지 확인하기. - 진행중
+
+CORS 오류 해결! => API 요청이므로 nodejs에서 받아오도록 했고, cors와 request 모듈을 사용했다. 성공!
+
+geolocation 역시 위의 방법으로 받아옴!ㅎㅎㅎ
+navigator과 비교해볼 것!
+
+2) google-maps-react 사용법 찾아보기
+
+---------------0605 -------------------------
+1. youtube 영상을 보고 구글 api 사용방법을 터득했다. (https://www.youtube.com/watch?v=WZcxJGmLbSo)
+   일단 onClick 이벤트 사용법을 알게 된 것이 좋았다.
+   근데 계속하다 보니까 현재 위치를 가져오는데 너무 쉽게 가져오드라.. 현타 옴
+   그리고 위치 검색까지 가능하게 되었다.
+   얻은 것.=> 온클릭 이벤트, 현재 위치 가져오기, 위치 검색, 마커 찍기
+   그리고 사용하는 모듈이 변경되었다. google-maps-react => @react-google-maps/api
+   위치명 자동완성은 use-places-autocomplete
+
+2. 그래서! 이제 뭐할 거냐..
+   1) 가져올 만한 기능(현재 위치로 이동 등) 가져오기, onclick 등 가져오기.
+      확실한 건 지도 모듈은 바꿀 것. 왜냐면 기존 방식은 안되는 것이 너무 많기 때문.
+      레퍼런스도 그렇고..
+   2) 근데 결국 auto complete기능이 생겼기 때문에 
+    a. geocode로 위경도를 주소로 교체
+    b. geolocation으로 현재 위치 기능 교체 
+    c. 주소 검색해서 해당 주소로 이동
+    d. 위치 명 검색해서 해당 위치로 이동
+    은 다 되게 되었다.
+    이걸 만들던 api로 이전하고, 현재 위치를 지도 윗 부분에 위치하도록 하면 좋을 것 같다. 특별히 ui적으로 뜻은 없기 때문에!
+    
+    이전 다하면, 클릭 시 해당 위치의 정보가 뜨도록 해야겠다.
+    지도 하단에. 그리고 업로드의 내용들을 붙일 수 있도록 해야지.(장소 선정 -> 시간, 비용 선정 등으로 이어지는.)
+    
+*카카오 지도를 보면서 느낀 건데.. 상호명 같은 것들은 국내 지도앱이 월등히 앞선다. 근데 경로 api나 지도상 얹는 것이 더 용이할 것 같아 구글을 쓴... 다...
+ 단점을 극복할 수 있을만한 방법이 뭐가 있을지 생각해봐야겠다.
+
+
+ -------0606 1130------------------
+ 1. 지도 api 완전 이전하고, 기능도! 
+    1) 시작시 현재위치로 시작
+    2) 현재 위치로 이동
+    3) 현재 위치 구, 동 단위로 보이기 
+    + 맵 ui 루트 표시 빼고는 완성하기
+
+ 2. 마이루트 데이터 사이드 바에 올라오도록 하기( 카드 샘플 만들기 )
+ 
+ 3. 업로드(editor tool) 부분 툴 가지고 시작하기
+    - 제목, 태그, 글 작성 부분 만들기
+    - 지도 부분 띄우고, 클릭 시 나오는 것 이전 ui까지 완성하기
+

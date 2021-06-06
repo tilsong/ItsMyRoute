@@ -74,7 +74,7 @@ const signUp = () => {
       <Head>
         <title> SignUp | It&apos;s My Route</title>
       </Head>
-      <div style={{ fontSize: '70px', textAlign: 'center' }}>It's My Route</div>
+      <div style={{ fontSize: '70px', textAlign: 'center' }}>It&#39;s My Route</div>
       <br />
       <div style={{ textAlign: 'center', border: '1px solid black' }}>소셜로그인칸
         <SocialLogin />

@@ -8,7 +8,7 @@ import AddLocation from '../components/AddLocation';
 const writeMyRoute = () => (
   <>
     <Head>
-      <title> 새 마이루트 작성 | It's My Route</title>
+      <title> 새 마이루트 작성 | It&#39;s My Route</title>
     </Head>
     <AppLayout>
       <div style={{ backgroundColor: '#F8F8F8' }}>

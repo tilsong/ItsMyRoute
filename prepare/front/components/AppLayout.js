@@ -55,7 +55,7 @@ const AppLayout = ({ children }) => {
             <div style={{ marginTop: '12px' }}>
               <Menu mode="horizontal">
                 <Menu.Item style={{ marginBottom: '10px', fontSize: '30px', fontWeight: 'bold' }}>
-                  <Link href="/"><a>It's My Route</a></Link>
+                  <Link href="/"><a>It&#39;s My Route</a></Link>
                 </Menu.Item>
                 <MenuItem>
                   <Link href="/user"><UserOutlined style={{ fontSize: '30px', marginTop: '5px' }} /></Link>

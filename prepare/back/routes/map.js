@@ -6,6 +6,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 const googleKey = process.env.GOOGLE_APIKEY;
 
+
 router.get('/current', async (req, res, next) => {
     try {
       console.log("12344556");
