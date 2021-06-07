@@ -256,7 +256,7 @@ navigator과 비교해볼 것!
 
 
  -------0606 1130------------------
- 1. 지도 api 완전 이전하고, 기능도! 
+ 1. 지도 api 완전 이전하고, 기능도!   -> 완료
     1) 시작시 현재위치로 시작
     2) 현재 위치로 이동
     3) 현재 위치 구, 동 단위로 보이기 
@@ -268,61 +268,23 @@ navigator과 비교해볼 것!
     - 제목, 태그, 글 작성 부분 만들기
     - 지도 부분 띄우고, 클릭 시 나오는 것 이전 ui까지 완성하기
 
+---now
+
+  책보고 태그 하려다 인성 망가질뻔..
+  구글 맵 markers 배열 추가했던 것 참고해서 그냥 한번 만들어 볼까한다! 이전과 같은 실수는 없다ㅎ
+  시작!
 
 
-import React, { useCallback, useEffect } from 'react';
-import { GoogleApiWrapper, InfoWindow, Map, Marker } from 'google-maps-react';
-import { useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
-import * as config from '../config';
+# 0607 0930
 
-const FullMap = (props) => {
-  const { currentLocation } = useSelector((state) => state.map);
-  useEffect(() => {
-    console.log(props);
-  }, []);
-  const onEventCheck = (props) => {
-    console.log(props);
-  };
+1. 태그 기능 구현하기
+   - marker 기능 활용해서 해보기. 한 시간 해보고 안되면 딴 거 하기(할 것 많기 때문)
 
-  return (
-    <div>
-      { currentLocation
-      && (
-      <div>
-        <Map
-          google={props.google}
-          onClick={onEventCheck}
-          style={{ width: '100%', height: '100%', position: 'relative' }}
-          className="map"
-          center={{
-            lat: currentLocation.lat,
-            lng: currentLocation.lng,
-          }}
-          initialCenter={{
-            lat: currentLocation.lat,
-            lng: currentLocation.lng,
-          }}
-          zoom={14}
-        />
+2. 에디터 툴 적용해서 제목, 태그, 글 작성, 이미지 업로드 기능 만들기
 
-      </div>
-      )}
-    </div>
-  );
-};
+3. 지도 제외하고 업로드 기능 완성하기.
 
-GoogleApiWrapper.propTypes = {
-  props: PropTypes.shape({
-    google: PropTypes.object,
-    zoom: PropTypes.number,
-    center: PropTypes.object,
-    initialCenter: PropTypes.object,
-  }).isRequired,
-};
++ a = 업로드 부분 클릭 이벤트로 상세정보와 진행 창 띄우는 기능 해보기
 
-export default GoogleApiWrapper({
-  apiKey: config.GOOGLEMAP_APIKEY,
-})(FullMap);
-
-
+  redux => toolkit으로 변형??
+  

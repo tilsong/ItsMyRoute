@@ -1,7 +1,6 @@
 import produce from 'immer';
 
 export const initialState = {
-  tagList: ['err'],
   todayMyroute: [],
   myRoutes: [],
   imagePaths: [],
@@ -28,9 +27,6 @@ export const initialState = {
   addCommentDone: false,
   addCommentError: null,
 };
-
-export const PLUS_TAG = 'PLUS_TAG';
-export const DELETE_TAG = 'DELETE_TAG';
 
 export const LOAD_TODAYROUTE_REQUEST = 'LOAD_TODAYROUTE_REQUEST';
 export const LOAD_TODAYROUTE_SUCCESS = 'LOAD_TODAYROUTE_SUCCESS';
@@ -62,12 +58,6 @@ export const ADD_COMMENT_FAILURE = 'ADD_COMMENT_FAILURE';
 
 const reducer = (state = initialState, action) => produce(state, (draft) => {
   switch (action.type) {
-    case PLUS_TAG:
-      draft.tagList = draft.tagList.concat(action.data);
-      break;
-    case DELETE_TAG:
-      draft.tagList = draft.tagList.filter((v) => v.tag !== action.data.tag);
-      break;
     case LOAD_TODAYROUTE_REQUEST:
       draft.loadTodayRouteLoading = true;
       draft.loadTodayRouteDone = false;

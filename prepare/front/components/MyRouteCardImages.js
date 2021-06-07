@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const MyRouteCardImages = ({ image }) => (
   <>
@@ -7,5 +8,7 @@ const MyRouteCardImages = ({ image }) => (
     </div>
   </>
 );
+
+
 
 export default MyRouteCardImages;
