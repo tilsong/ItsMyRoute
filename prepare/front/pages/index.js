@@ -4,10 +4,11 @@ import { Fab } from 'react-tiny-fab';
 import Router from 'next/router';
 import { MdModeEdit } from 'react-icons/md';
 // import { useDispatch } from 'react-redux';
-import AppLayout from '../components/AppLayout';
-import TimeLine from '../components/TimeLine.js';
-import TodayRoute from '../components/TodayRoute';
-import PopularityTags from '../components/PopularityTags';
+
+import AppLayout from '../components/common/AppLayout';
+import TodayRoute from '../components/main/TodayRoute';
+import TimeLine from '../components/main/TimeLine';
+import PopularityTags from '../components/main/PopularityTags';
 import 'react-tiny-fab/dist/styles.css';
 // 메인 페이지, SNS
 

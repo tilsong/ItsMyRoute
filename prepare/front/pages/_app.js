@@ -4,6 +4,7 @@ import Head from 'next/head';
 import 'antd/dist/antd.css';
 import wrapper from '../store/configureStore';
 import 'quill/dist/quill.bubble.css';
+// import '../sample.css';
 
 const App = ({ Component }) => (
   <>

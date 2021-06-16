@@ -69,7 +69,7 @@ function* addMyRoute(action) {
 }
 
 function uploadImagesAPI(data) {
-  return axios.patch('/myRoute/images', data);
+  return axios.post('/myRoute/images', data);
 }
 
 function* uploadImages(action) {

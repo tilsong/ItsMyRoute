@@ -2,9 +2,9 @@
 import React from 'react';
 import Head from 'next/head';
 import { Col, Row } from 'antd';
-import AppLayout from '../components/AppLayout';
-import FullMap from '../components/FullMap';
-import SideBar from '../components/SideBar';
+import AppLayout from '../components/common/AppLayout';
+import FullMap from '../components/searchMap/FullMap';
+import SideBar from '../components/searchMap/SideBar';
 
 const searchMap = () => (
   <>

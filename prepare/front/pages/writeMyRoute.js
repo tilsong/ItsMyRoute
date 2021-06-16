@@ -1,9 +1,9 @@
 import React from 'react';
 import Head from 'next/head';
 import { Row, Col } from 'antd';
-import AppLayout from '../components/AppLayout';
-import WriteMyRouteForm from '../components/WriteMyRouteForm';
-import AddLocation from '../components/AddLocation';
+import AppLayout from '../components/common/AppLayout';
+import WriteMyRouteForm from '../components/writeMyRoute/WriteMyRouteForm';
+import AddLocation from '../components/writeMyRoute/AddLocation';
 
 const writeMyRoute = () => (
   <>

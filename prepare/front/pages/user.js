@@ -2,7 +2,7 @@
 import React from 'react';
 import Head from 'next/head';
 import { Avatar } from 'antd';
-import AppLayout from '../components/AppLayout';
+import AppLayout from '../components/common/AppLayout';
 
 const user = () => (
   <>
