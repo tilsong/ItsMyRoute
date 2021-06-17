@@ -3,6 +3,10 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const request = require('request');
+const multerS3 = require('multer-s3');
+const AWS = require('aws-sdk');
+const dotenv = require('dotenv');
+dotenv.config();
 
 const { MyRoute, MyRouteDatail, MyRouteFile, Comment, User, Tag } = require('../models');
 const { isLoggedIn } = require('./middlewares');
@@ -16,16 +20,19 @@ try {
     fs.mkdirSync('uploads');
 }
 
+AWS.config.update({
+  accessKeyId: process.env.S3_ACCESS_KEY_ID,
+  secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+  region: 'ap-northeast-2',
+});
+
 const upload = multer({
-    storage: multer.diskStorage({
-        destination(req, file, done) {
-            done(null, 'uploads');
-        },
-        filename(req, file, done) {
-            const ext = path.extname(file.originalname);
-            const basename = path.basename(file.originalname, ext);
-            done(null, basename + '_' + new Date().getTime() + ext);
-        },
+    storage: multerS3({
+      s3: new AWS.S3(),
+      bucket: 'itsmyroute',
+      key(req, file, cb) {
+        cb(null, `original/${Date.now()}_${path.basename(file.originalname)}`)
+      }
     }),
     limits: { fileSize: 20* 1024 * 1024 },
 });
@@ -84,7 +91,37 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next) => { // POST 
 // 이미지 업로드
 router.post('/images', isLoggedIn, upload.array('image'), (req, res, next) => { // POST /post/images
   console.log(req.files);
-  res.json(req.files.map((v) => v.filename));
+  res.json(req.files.map((v) => v.location));
+});
+
+// 개별 마이루트 페이지, 추후 상세 내역 수정 필요
+router.get('/:myRouteId', async (req, res, next) => {
+  try {
+    const myRoute = await MyRoute.findOne({
+      where: { id: req.params.myRouteId },
+      include: [{
+        model: User,
+        attributes: ['id', 'nickname'],
+      }, {
+        model: Image,
+      }, {
+        model: Comment,
+        include: [{
+          model: User,
+          attributes: ['id', 'nickname'],
+          order: [['createdAt', 'DESC']],
+        }],
+      }, {
+        model: User, // 좋아요 누른 사람
+        as: 'Likers',
+        attributes: ['id'],
+      }],
+    });
+    res.status(200).json(myRoute);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
 });
 
 router.patch('/:myRouteId/like', isLoggedIn, async (req, res, next) => { // PATCH /post/1/like

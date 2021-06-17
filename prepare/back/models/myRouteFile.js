@@ -1,15 +1,23 @@
-module.exports = (sequelize, DataTypes) => {
-    const MyRouteFile = sequelize.define('MyRouteFile', {
+const DataTypes = require('sequelize');
+const { Model } = DataTypes;
+
+module.exports = class MyRouteFile extends Model {
+  static init(sequelize) {
+    return super.init({
         src:{
             type: DataTypes.STRING(200),
             allowNull: false,
         },
-    }, {
-        charset: 'utf8',
-        collate: 'utf8_general_ci',
-    });
-    MyRouteFile.associate = (db) => {
-        db.MyRouteFile.belongsToMany(db.MyRoute, { through: 'MyRouteMyRouteFile'});
-    };
-    return MyRouteFile;
-}
+      }, {
+            modelName: 'MyRouteFile',
+            tableName: 'myRouteFiles',
+            charset: 'utf8mb4',
+            collate: 'utf8mb4_general_ci', // 한글 저장
+            sequelize, //연결 객체
+        });
+    }
+  static associate(db) {
+    db.MyRouteFile.belongsToMany(db.MyRoute, { through: 'MyRouteMyRouteFile'});
+  }
+
+};

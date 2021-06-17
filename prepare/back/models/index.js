@@ -1,4 +1,16 @@
 const Sequelize = require('sequelize');
+const admin = require('./admin');
+const banner = require('./banner');
+const calendar = require('./calendar');
+const chat = require('./chat');
+const comment = require('./comment');
+const myRoute = require('./myRoute');
+const myRouteDetail = require('./myRouteDetail');
+const myRouteFile = require('./myRouteFile');
+const scrap = require('./scrap');
+const tag = require('./tag');
+const user = require('./user');
+
 const env = process.env.NODE_ENV || 'development';
 const config = require('../config/config')[env];
 const db = {};
@@ -7,17 +19,21 @@ const db = {};
 const sequelize = new Sequelize(config.database, config.username, config.password, config);
 
 // 모델 나열
-db.Admin = require('./admin')(sequelize,Sequelize);
-db.Banner = require('./banner')(sequelize,Sequelize);
-db.Calendar = require('./calendar')(sequelize,Sequelize);
-db.Chat = require('./chat')(sequelize,Sequelize);
-db.Comment = require('./comment')(sequelize,Sequelize);
-db.MyRoute = require('./myRoute')(sequelize,Sequelize);
-db.MyRouteDetail = require('./myRouteDetail')(sequelize,Sequelize);
-db.MyRouteFile = require('./myRouteFile')(sequelize,Sequelize);
-db.Scrap = require('./scrap')(sequelize,Sequelize);
-db.Tag = require('./tag')(sequelize,Sequelize);
-db.User = require('./user')(sequelize,Sequelize);
+db.Admin = admin;
+db.Banner = banner;
+db.Calendar = calendar;
+db.Chat = chat;
+db.Comment = comment;
+db.MyRoute = myRoute;
+db.MyRouteDetail = myRouteDetail
+db.MyRouteFile = myRouteFile
+db.Scrap = scrap
+db.Tag = tag
+db.User = user
+
+Object.keys(db).forEach(modelName => {
+  db[modelName].init(sequelize);
+});
 
 Object.keys(db).forEach(modelName => {
   if (db[modelName].associate) {

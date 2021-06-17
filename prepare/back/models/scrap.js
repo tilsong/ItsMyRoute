@@ -1,19 +1,27 @@
-module.exports = (sequelize, DataType) => {
-    const Scrap = sequelize.define('Scrap', {
+const DataTypes = require('sequelize');
+const { Model } = DataTypes;
+
+module.exports = class Scrap extends Model {
+  static init(sequelize) {
+    return super.init({
         name: {
-            type: DataType.STRING(20),
+            type: DataTypes.STRING(20),
             allowNull: false,
         },
         detail: {
-            type: DataType.STRING(50),
+            type: DataTypes.STRING(50),
             allowNull: false,
         },
-    }, {
-        charset: 'utf8',
-        collate: 'utf8_general_ci',
-    });
-    Scrap.associate = (db) => {
-        db.Scrap.belongsToMany(db.User, { through: 'MyRouteScrap' });
-    };
-    return Scrap;
-}
+      }, {
+            modelName: 'Scrap',
+            tableName: 'scraps',
+            charset: 'utf8',
+            collate: 'utf8_general_ci',
+            sequelize, //연결 객체
+        });
+    }
+  static associate(db) {
+    db.Scrap.belongsToMany(db.User, { through: 'MyRouteScrap' });
+  }
+
+};

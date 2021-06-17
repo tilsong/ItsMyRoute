@@ -1,8 +1,23 @@
 # now
+1_ ssr 외 기타 업데이트하기
+   - ssr => login부분은 안함. 추후 문제 생기면 하기.
+         => timeline 완료. (초기 4개 받아오기, 이후 10개로 수정 가능)
+         => todayroute 부분도 안되네? 추후 확인하기
+   - 다이나믹 라우팅
+      => 개별 마이루트 페이지 완료, 추후 상세 내역 수정 필요
+   - css 서버사이드 렌더링 
+      => npm i babel-plugin-styled-components 
+         그리고 _document.js 작성과 폴리필io 작성
+   - moment => MyRouteCard에 적용함.
+   - webpack => withBundleAnalyzer 적용
+   - immer => ie 사용가능하도록 es5 적용
+   - sequelize 문법 최신화
+
+2_ 기능으로(삭제 부터)
 
 1. 인강 듣자^^
    - ssr, aws
-
+// page에서 안쓰고 document나 app에서만 쓰는 특수한 ssr 메서드임
 -------------------------------------------------------
 
 ssr x(csr) = > 새로고침 시 프론트 서버로 감. 그런데 로그인이 잠깐 풀렸다가  브 -> 백으로 요청 보내서 로그인 내용 받아옴.
@@ -492,4 +507,18 @@ export default (...args) => {
 import produce from '../util/produce';
 
 swr도 ssr 가능
-return 해주고, props로 넘겨줌.  index.js 보기
+return 해주고, props로 넘겨줌.  index.js
+
+
+---------------------------------------
+    "start": "cross-env NODE_NODE_ENV=production next start -p 3060"
+
+
+
+
+--------------------------------------
+
+back mysql 설치
+
+sudo apt-get install -y mysql-server
+

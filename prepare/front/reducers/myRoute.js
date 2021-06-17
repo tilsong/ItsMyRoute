@@ -1,8 +1,9 @@
-import produce from 'immer';
+import produce from '../util/produce';
 
 export const initialState = {
   todayMyroute: [],
   myRoutes: [],
+  myRouteOne: null,
   imagePaths: [],
   hasMoreMyRoutes: true,
   loadTodayRouteLoading: false,
@@ -11,6 +12,9 @@ export const initialState = {
   loadMyRoutesLoading: false,
   loadMyRoutesDone: false,
   loadMyRoutesError: null,
+  loadMyRouteOneLoading: false,
+  loadMyRouteOneDone: false,
+  loadMyRouteOneError: null,
   addMyRouteLoading: false,
   addMyRouteDone: false,
   addMyRoutetError: null,
@@ -35,6 +39,10 @@ export const LOAD_TODAYROUTE_FAILURE = 'LOAD_TODAYROUTE_FAILURE';
 export const LOAD_MYROUTES_REQUEST = 'LOAD_MYROUTES_REQUEST';
 export const LOAD_MYROUTES_SUCCESS = 'LOAD_MYROUTES_SUCCESS';
 export const LOAD_MYROUTES_FAILURE = 'LOAD_MYROUTES_FAILURE';
+
+export const LOAD_MYROUTEONE_REQUEST = 'LOAD_MYROUTEONE_REQUEST';
+export const LOAD_MYROUTEONE_SUCCESS = 'LOAD_MYROUTEONE_SUCCESS';
+export const LOAD_MYROUTEONE_FAILURE = 'LOAD_MYROUTEONE_FAILURE';
 
 export const ADD_MYROUTE_REQUEST = 'ADD_MYROUTE_REQUEST';
 export const ADD_MYROUTE_SUCCESS = 'ADD_MYROUTE_SUCCESS';
@@ -90,6 +98,20 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       draft.loadMyRoutesError = action.error;
       break;
     case ADD_MYROUTE_REQUEST:
+      draft.loadMyRouteOneLoading = true;
+      draft.loadMyRouteOneDone = false;
+      draft.loadMyRouteOneError = null;
+      break;
+    case LOAD_MYROUTEONE_SUCCESS:
+      draft.loadMyRouteOneLoading = false;
+      draft.loadMyRouteOneDone = true;
+      draft.myRouteOne = action.data;
+      break;
+    case LOAD_MYROUTEONE_FAILURE:
+      draft.loadMyRouteOneLoading = false;
+      draft.loadMyRouteOneError = action.error;
+      break;
+    case LOAD_MYROUTEONE_REQUEST:
       draft.addMyRouteLoading = true;
       draft.addMyRouteDone = false;
       draft.addMyRoutetError = null;
@@ -110,7 +132,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       draft.uploadImagesError = null;
       break;
     case UPLOAD_IMAGES_SUCCESS:
-      draft.imagePaths = action.data;
+      draft.imagePaths = draft.imagePaths.concat(action.data);
       draft.uploadImagesLoading = false;
       draft.uploadImagesDone = true;
       break;

@@ -1,5 +1,9 @@
-module.exports = (sequelize, DataTypes) => {
-    const User = sequelize.define('User', {
+const DataTypes = require('sequelize');
+const { Model } = DataTypes;
+
+module.exports = class User extends Model {
+  static init(sequelize) {
+    return super.init({
         email: {
             type: DataTypes.STRING(30),
             allowNull: false,
@@ -33,19 +37,23 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(30),
             allowNull: true,
         }
-    }, {
-        charset: 'utf8',
-        collate: 'utf8_general_ci',
-    });
-    User.associate = (db) => {
-        db.User.hasMany(db.MyRoute);
-        db.User.hasMany(db.Comment);
-        db.User.belongsToMany(db.Chat, { through: 'UserChat' });
-        db.User.belongsToMany(db.Scrap, { through: 'UserScrap'});
-        db.User.belongsToMany(db.Calendar, { through: 'UserCalendar'});
-        db.User.belongsToMany(db.MyRoute, { through: 'Like', as: 'Liked'});
-        db.User.belongsToMany(db.User, { through: 'Follow', as: 'Followers', foreignKey: 'FollowingId' });
-        db.User.belongsToMany(db.User, { through: 'Follow', as: 'Followings', foreignKey: 'FollowerId' });
-    };
-    return User;
-}
+      }, {
+            modelName: 'User',
+            tableName: 'Users',
+            charset: 'utf8mb4',
+            collate: 'utf8mb4_general_ci', // 한글 저장
+            sequelize, //연결 객체
+        });
+    }
+  static associate(db) {
+    db.User.hasMany(db.MyRoute);
+    db.User.hasMany(db.Comment);
+    db.User.belongsToMany(db.Chat, { through: 'UserChat' });
+    db.User.belongsToMany(db.Scrap, { through: 'UserScrap'});
+    db.User.belongsToMany(db.Calendar, { through: 'UserCalendar'});
+    db.User.belongsToMany(db.MyRoute, { through: 'Like', as: 'Liked'});
+    db.User.belongsToMany(db.User, { through: 'Follow', as: 'Followers', foreignKey: 'FollowingId' });
+    db.User.belongsToMany(db.User, { through: 'Follow', as: 'Followings', foreignKey: 'FollowerId' });
+  }
+
+};

@@ -7,6 +7,7 @@ import '@reach/combobox/styles.css';
 import SearchLocation from '../searchMap/SearchLocation';
 import NamingLocationModal from './NamingLocationModal';
 import HowMuchModal from './HowMuchModal';
+import { current } from 'immer';
 
 const key = config.GOOGLEMAP_APIKEY;
 
@@ -107,7 +108,7 @@ const AddLocation = () => {
     if (markers.length < 1) {
       setMarkers(() => [
         {
-          order: markers.length + 1,
+          order: 1,
           lat: clickLocationNumber.lat,
           lng: clickLocationNumber.lng,
           time: new Date(),
@@ -118,7 +119,7 @@ const AddLocation = () => {
       setMarkers((currentMarkers) => [
         ...currentMarkers,
         {
-          order: markers.length + 1,
+          order: currentMarkers[currentMarkers.length - 1].order + 1,  //markers.length + 1,
           lat: clickLocationNumber.lat,
           lng: clickLocationNumber.lng,
           time: new Date(),
@@ -149,21 +150,32 @@ const AddLocation = () => {
     howMuchModalToggle();
   }, [tempLocation, howMuchModal, locationInfoArray]);
 
+  const deleteLocation = useCallback( () => {
+    // locationInfoArray 삭제, markers 삭제, polyline 연결
+    setMarkers((current) => 
+      current.filter((v) => (v.order) !== selected.order)
+    );
+    setPath((current) => 
+      [ ...current.slice(0, selected.order - 1).concat(...current.slice(selected.order, current.length+1))]
+    );
+    setLocationInfoArray((current) => 
+      [ ...current.slice(0, selected.order - 1).concat(...current.slice(selected.order, current.length+1))]
+    );
+    setSelected(null);
+    
+    // markers.order 재구성 
+    // 어떻게 하면.. 모든 배열의 요소를 돌면서 order를 다시 정해줄 수 있을까?
+    // map 
+
+
+  }, [selected, markers, locationInfoArray, path]);
+
+
   useEffect(() => {
-    console.log(markers, locationInfoArray, path);
+    console.log('locationInfoArray', locationInfoArray);
+    console.log('markers', markers);
+    console.log('path', path);
   }, [markers, locationInfoArray, path]);
-
-  const deleteLocation = useCallback(() => {
-    console.log(selected);
-    console.log(selected.order);
-    setLocationInfoArray((current) => [
-      current.filter((v) =>(v.order) !== selected.order)
-    ]);    
-  }, [selected]);
-
-  useEffect(() => {
-    console.log(locationInfoArray);
-  }, [locationInfoArray]);
 
   // 위치의 위도와 경도를 문자로 반환해서 상태 저장
   const changeNumberToName = useCallback((lat, lng) => {

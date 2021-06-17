@@ -1,5 +1,9 @@
-module.exports = (sequelize, DataTypes) => {
-    const MyRouteDetail = sequelize.define('MyRouteDetail', {
+const DataTypes = require('sequelize');
+const { Model } = DataTypes;
+
+module.exports = class MyRouteDetail extends Model {
+  static init(sequelize) {
+    return super.init({
         locationValue: {
             type: DataTypes.STRING(30),
             allowNull: false,
@@ -20,12 +24,15 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(10),
             allowNull: false,
         }
-    }, {
-        charset: 'utf8',
-        collate: 'utf8_general_ci',
-    });
-    MyRouteDetail.associate = (db) => {
-        db.MyRouteDetail.belongsToMany(db.MyRoute, { through: 'MyRouteMyRouteDetail'});
+      }, {
+            modelName: 'MyRouteDetail',
+            tableName: 'myRouteDetails',
+            charset: 'utf8mb4',
+            collate: 'utf8mb4_general_ci', // 한글 저장
+            sequelize, //연결 객체
+        });
     }
-    return MyRouteDetail;
-}
+  static associate(db) {
+    db.MyRouteDetail.belongsToMany(db.MyRoute, { through: 'MyRouteMyRouteDetail'});
+  }
+};

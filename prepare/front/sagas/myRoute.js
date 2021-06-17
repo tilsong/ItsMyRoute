@@ -5,7 +5,7 @@ import { ADD_MYROUTE_FAILURE, ADD_MYROUTE_REQUEST, ADD_MYROUTE_SUCCESS,
   LOAD_TODAYROUTE_FAILURE, LOAD_TODAYROUTE_REQUEST, LOAD_TODAYROUTE_SUCCESS,
   UPLOAD_IMAGES_FAILURE, UPLOAD_IMAGES_REQUEST, UPLOAD_IMAGES_SUCCESS,
   LIKE_MYROUTE_REQUEST, LIKE_MYROUTE_SUCCESS, LIKE_MYROUTE_FAILURE,
-  UNLIKE_MYROUTE_REQUEST, UNLIKE_MYROUTE_SUCCESS, UNLIKE_MYROUTE_FAILURE, ADD_COMMENT_REQUEST, ADD_COMMENT_SUCCESS, ADD_COMMENT_FAILURE } from '../reducers/myRoute';
+  UNLIKE_MYROUTE_REQUEST, UNLIKE_MYROUTE_SUCCESS, UNLIKE_MYROUTE_FAILURE, ADD_COMMENT_REQUEST, ADD_COMMENT_SUCCESS, ADD_COMMENT_FAILURE, LOAD_MYROUTEONE_REQUEST, LOAD_MYROUTEONE_SUCCESS, LOAD_MYROUTEONE_FAILURE } from '../reducers/myRoute';
 
 function loadTodayRouteAPI() {
   return axios.get('/myRoutes/todayMyRoute');
@@ -43,6 +43,26 @@ function* loadMyRoutes(action) {
     console.error(err);
     yield put({
       type: LOAD_MYROUTES_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
+function loadMyRouteOneAPI(data) {
+  return axios.get(`/myRoutes/${data}`);
+}
+
+function* loadMyRouteOne(action) {
+  try {
+    const result = yield call(loadMyRouteOneAPI, action.data);
+    yield put({
+      type: LOAD_MYROUTEONE_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: LOAD_MYROUTEONE_FAILURE,
       error: err.response.data,
     });
   }
@@ -156,6 +176,10 @@ function* watchLoadMyRoutes() {
   yield takeEvery(LOAD_MYROUTES_REQUEST, loadMyRoutes);
 }
 
+function* watchLoadMyRouteOne() {
+  yield takeEvery(LOAD_MYROUTEONE_REQUEST, loadMyRouteOne);
+}
+
 function* watchAddMyRoute() {
   yield takeEvery(ADD_MYROUTE_REQUEST, addMyRoute);
 }
@@ -180,6 +204,7 @@ export default function* myRouteSaga() {
   yield all([
     fork(watchLoadTodayRoute),
     fork(watchLoadMyRoutes),
+    fork(watchLoadMyRouteOne),
     fork(watchAddMyRoute),
     fork(watchUploadImages),
     fork(watchLikeMyRoute),

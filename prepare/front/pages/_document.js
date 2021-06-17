@@ -6,25 +6,25 @@ export default class MyDocument extends Document {
   static async getInitialProps(ctx) { // page에서 안쓰고 document나 app에서만 쓰는 특수한 ssr 메서드임
     const sheet = new ServerStyleSheet();
     const originalRenderPage = ctx.renderPage;
-    
+
     try {
-        ctx.renderPage = () => originalRenderPage ({
-            enhanceApp: (App) => (props) => sheet.collectStyles(<App {..props} />),
-        });
-        const initialProps = await Document.getInitialProps(ctx);
-        return {
-            ...getInitialProps,
-            styles: (
-                <>
-                    {initialProps.styles}
-                    {sheet.getStyleElement()}
-                </>
-            )
-        };
+      ctx.renderPage = () => originalRenderPage({
+        enhanceApp: (App) => (props) => sheet.collectStyles(<App {...props} />),
+      });
+      const initialProps = await Document.getInitialProps(ctx);
+      return {
+        ...initialProps,
+        styles: (
+          <>
+            {initialProps.styles}
+            {sheet.getStyleElement()}
+          </>
+        ),
+      };
     } catch (error) {
-        console.error(error);
+      console.error(error);
     } finally {
-        sheet.seal();
+      sheet.seal();
     }
   }
 

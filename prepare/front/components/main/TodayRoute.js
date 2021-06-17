@@ -26,7 +26,7 @@ const TodayRoute = () => {
           renderItem={(today) => (
             <List.Item>
               <Card
-                cover={<img role="presentation" src={today.MyRouteFiles[0] && `http://localhost:3065/${today.MyRouteFiles[0].src}`} style={{height:'220px'}}/>}
+                cover={<img role="presentation" src={today.MyRouteFiles[0] && `${today.MyRouteFiles[0].src}`} style={{ height: '220px' }} />}
                 actions={[
                   <div>{today.title}</div>,
                 ]}

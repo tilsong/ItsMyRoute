@@ -1,25 +1,32 @@
-module.exports = (sequelize, DataType) => {
-    const Calendar = sequelize.define('Calendar', {
+const DataTypes = require('sequelize');
+const { Model } = DataTypes;
+
+module.exports = class Calendar extends Model {
+  static init(sequelize) {
+    return super.init({
         name: {
-            type: DataType.STRING(20),
+            type: DataTypes.STRING(20),
             allowNull: false,
         },
         detail: {
-            type: DataType.STRING(50),
+            type: DataTypes.STRING(50),
             allowNull: true,
         },
         calendarDate: {
-            type: DataType.DATE,
+            type: DataTypes.DATE,
             allowNull: false,
         }
-    }, {
-        charset: 'utf8',
-        collate: 'utf8_general_ci',
-    });
-    Calendar.associate = (db) => {
-        db.Calendar.belongsToMany(db.User, { through: 'UserCalendar'});
-        db.Calendar.belongsToMany(db.MyRoute, { through: 'MyRouteCalendar'});
+      }, {
+            modelName: 'Calendar',
+            tableName: 'calendars',
+            charset: 'utf8mb4',
+            collate: 'utf8mb4_general_ci', // 한글 저장
+            sequelize, //연결 객체
+        });
     }
-    
-    return Calendar;
-}
+  static associate(db) {
+    db.Calendar.belongsToMany(db.User, { through: 'UserCalendar'});
+    db.Calendar.belongsToMany(db.MyRoute, { through: 'MyRouteCalendar'});
+  }
+
+};

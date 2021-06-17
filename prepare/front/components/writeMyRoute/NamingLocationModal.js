@@ -31,6 +31,7 @@ const NamingModalDiv = styled.div`
 const NamingLocationModal = ({
   namingModalToggle, clickLocationName, getLocation, nextModal, cref
 }) => {
+
   const [selectLocation, onChangeSelectLocation] = useInput('');
 
   useImperativeHandle(cref, () => ({
@@ -42,7 +43,6 @@ const NamingLocationModal = ({
       }
     },
   }));
-
   return (
     <NamingModalDiv>
       <GrFormClose onClick={namingModalToggle} style={{ cursor: 'pointer', position: 'absolute', right: '18px', fontSize: '40px' }} />

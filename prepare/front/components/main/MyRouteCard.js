@@ -4,9 +4,12 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { HeartOutlined, HeartTwoTone, MessageOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
+import moment from 'moment';
 import MyRouteCardImages from './MyRouteCardImages';
 import { LIKE_MYROUTE_REQUEST, UNLIKE_MYROUTE_REQUEST } from '../../reducers/myRoute';
 import CommentForm from './CommentForm';
+
+moment.locale('ko');
 
 const CardWrapper = styled.div`
   margin-bottom: 20px;
@@ -52,6 +55,9 @@ const MyRouteCard = ({ myRoute }) => {
             : <HeartOutlined key="heart" onClick={onLike} />,
           <MessageOutlined key="comment" onClick={onToggleComment} />]}
       >
+        <>
+          <span style={{ float: 'right' }}>{moment(myRoute.createdAt).startOf('hour').fromNow()}</span>
+        </>
         <Card.Meta
           avatar={<Avatar>{myRoute.User.nickname}</Avatar>}
           title={myRoute.User.nickname}

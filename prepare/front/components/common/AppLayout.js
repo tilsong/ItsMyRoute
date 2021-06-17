@@ -33,7 +33,7 @@ const AppLayout = ({ children }) => {
   // 로그인 되지 않았을 때 로그인 메뉴로 가도록 설정하기
   const { me, logoutLoading } = useSelector((state) => state.user);
 
-  // 로그인 시 지속적으로 상태 유지할 수 있도록 함. (서버 세션 연동)
+  // // 로그인 시 지속적으로 상태 유지할 수 있도록 함. (서버 세션 연동)
   useEffect(() => {
     dispatch({
       type: LOAD_MY_INFO_REQUEST,
