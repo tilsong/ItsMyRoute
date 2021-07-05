@@ -3,12 +3,12 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import useInput from '../../hooks/useInput';
 
-const TagBox = ({ cref, getTags }) => {
+const TagBox = ({ tagRef, getTags }) => {
   const [tagList, setTagList] = useState([]);
   const [input, onChangeInput, setInput] = useInput();
 
-  useImperativeHandle(cref, () => ({
-    send() {
+  useImperativeHandle(tagRef, () => ({
+    sendTag() {
       getTags(tagList);
     },
   }));
@@ -53,7 +53,7 @@ const TagBox = ({ cref, getTags }) => {
   }, [input, insertTag]);
 
   return (
-    <div style={{ display: 'flex' }}>
+    <div style={{ display: 'flex', marginLeft: '8px' }}>
       <div>
         <div style={{ display: 'flex', flexWrap: 'wrap' }}>
           {tagList.map((tag) => (
@@ -70,7 +70,7 @@ const TagBox = ({ cref, getTags }) => {
 };
 
 TagBox.propTypes = {
-  cref: PropTypes.func.isRequired,
+  tagRef: PropTypes.func.isRequired,
   getTags: PropTypes.func.isRequired,
 };
 

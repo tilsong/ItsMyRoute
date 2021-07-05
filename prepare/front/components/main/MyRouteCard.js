@@ -1,10 +1,11 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Card, Avatar, List, Comment } from 'antd';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { HeartOutlined, HeartTwoTone, MessageOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
+import Router from 'next/router';
 import MyRouteCardImages from './MyRouteCardImages';
 import { LIKE_MYROUTE_REQUEST, UNLIKE_MYROUTE_REQUEST } from '../../reducers/myRoute';
 import CommentForm from './CommentForm';
@@ -20,6 +21,17 @@ const MyRouteCard = ({ myRoute }) => {
   const id = useSelector((state) => state.user.me?.id);
   const liked = myRoute.Likers.find((v) => v.id === id);
   const [commentFormOpened, setCommentFormOpened] = useState(false);
+  const [miniContents, setMiniContents] = useState(false);
+  const [normalContents, setNormalContents] = useState('');
+
+  useEffect(() => {
+    const contentM = myRoute.content.replace(/<br\s*\/?>/mg, ' ');
+    if (myRoute.content.substring(121, 122)) {
+      setMiniContents(contentM.substring(0, 120));
+    } else {
+      setNormalContents(contentM);
+    }
+  }, []);
 
   const onToggleComment = useCallback(() => {
     setCommentFormOpened((prev) => !prev);
@@ -45,24 +57,49 @@ const MyRouteCard = ({ myRoute }) => {
     });
   }, [id]);
 
+  const moveMyRoute = useCallback(() => {
+    Router.push(`/myRoute/${myRoute.id}`);
+  }, []);
+
   return (
-    <CardWrapper key={myRoute.id}>
+    <CardWrapper key={myRoute.id} style={{ backgroundColor: 'white', position: 'relative', borderRadius: '10px', border: '1px solid white' }}>
+      <Card.Meta
+        style={{ position: 'relative', margin: '2% 2%' }}
+        avatar={myRoute.User.profile
+          ? (<Avatar src={myRoute.User.profile} />)
+          : (<Avatar>{myRoute.User.nickname}</Avatar>)}
+        title={myRoute.User.nickname}
+      />
       <Card
+        style={{ borderRadius: '10px', border: '1px solid white', cursor: 'default' }}
         cover={myRoute.MyRouteFiles[0] && <MyRouteCardImages images={myRoute.MyRouteFiles} />}
         actions={[
           liked
-            ? <HeartTwoTone twoToneColor="#eb2f96" key="heart" onClick={onUnLike} />
-            : <HeartOutlined key="heart" onClick={onLike} />,
-          <MessageOutlined key="comment" onClick={onToggleComment} />]}
+            ? <HeartTwoTone twoToneColor="#eb2f96" key="heart" style={{ fontSize: '20px' }} onClick={onUnLike} />
+            : <HeartOutlined key="heart" style={{ fontSize: '20px' }} onClick={onLike} />,
+          <MessageOutlined key="comment" style={{ fontSize: '20px' }} onClick={onToggleComment} />]}
       >
-        <>
-          <span style={{ float: 'right' }}>{moment(myRoute.createdAt).startOf('hour').fromNow()}</span>
-        </>
-        <Card.Meta
-          avatar={<Avatar>{myRoute.User.nickname}</Avatar>}
-          title={myRoute.User.nickname}
-          description={myRoute.content}
-        />
+        <div>
+          <Card.Meta
+            title={myRoute.title}
+          />
+
+          { miniContents
+            ? (
+              <div style={{ cursor: 'pointer', padding: '0', margin: '10px 0', color: '#979797' }}>
+                {miniContents}..
+                <span style={{ fontWeight: 'bold' }} onClick={moveMyRoute}>더보기</span>
+              </div>
+            )
+            : (
+              <div style={{ cursor: 'pointer', padding: '0', margin: '10px 0', color: '#979797' }} onClick={moveMyRoute}>
+                {normalContents}
+              </div>
+            )}
+
+          <div style={{ marginTop: '20px' }}>{moment(myRoute.createdAt).startOf('hour').fromNow()}</div>
+        </div>
+
       </Card>
       {commentFormOpened && (
         <>
@@ -75,7 +112,9 @@ const MyRouteCard = ({ myRoute }) => {
               <li>
                 <Comment
                   author={item.User.nickname}
-                  avatar={<Avatar>{item.User.nickname}</Avatar>}
+                  avatar={item.User.profile
+                    ? (<Avatar src={item.User.profile} />)
+                    : (<Avatar>{item.User.nickname}</Avatar>)}
                   content={item.content}
                 />
               </li>
@@ -89,6 +128,7 @@ const MyRouteCard = ({ myRoute }) => {
 MyRouteCard.propTypes = {
   myRoute: PropTypes.shape({
     id: PropTypes.number,
+    title: PropTypes.string,
     User: PropTypes.object,
     UserId: PropTypes.number,
     content: PropTypes.string,
@@ -96,8 +136,6 @@ MyRouteCard.propTypes = {
     Comments: PropTypes.arrayOf(PropTypes.any),
     MyRouteFiles: PropTypes.arrayOf(PropTypes.any),
     Likers: PropTypes.arrayOf(PropTypes.object),
-    // RetweetId: PropTypes.number,
-    // Retweet: PropTypes.objectOf(PropTypes.any),
   }).isRequired,
 };
 export default MyRouteCard;

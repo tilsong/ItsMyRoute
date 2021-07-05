@@ -4,13 +4,21 @@ const { Model } = DataTypes;
 module.exports = class MyRouteDetail extends Model {
   static init(sequelize) {
     return super.init({
-        locationValue: {
-            type: DataTypes.STRING(30),
+        lat: {
+            type: DataTypes.STRING(50),
+            allowNull: false,
+        },
+        lng: {
+            type: DataTypes.STRING(50),
             allowNull: false,
         },
         locationName :{
             type: DataTypes.STRING(30),
-            allowNull: false,
+            allowNull: true,
+        },
+        locationAddress: {
+            type: DataTypes.STRING(30),
+            allowNull: false, 
         },
         routeOrder: {
             type: DataTypes.STRING(10),
@@ -18,12 +26,12 @@ module.exports = class MyRouteDetail extends Model {
         },
         requiredMoney: {
             type: DataTypes.STRING(10),
-            allowNull: false,
+            allowNull: true,
         },
         requiredTime: {
             type: DataTypes.STRING(10),
-            allowNull: false,
-        }
+            allowNull: true,
+        },
       }, {
             modelName: 'MyRouteDetail',
             tableName: 'myRouteDetails',

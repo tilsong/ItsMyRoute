@@ -12,6 +12,10 @@ module.exports = class MyRoute extends Model {
             type: DataTypes.TEXT,
             allowNull: false,
         },
+        routeLocalName: {
+            type: DataTypes.STRING(30),
+            allowNull: true,
+        },
       }, {
             modelName: 'MyRoute',
             tableName: 'myRoutes',

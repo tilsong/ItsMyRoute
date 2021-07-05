@@ -15,13 +15,10 @@ const searchInput = {
 };
 
 const style1 = {
-  position: 'absolute',
-  top: '30px',
-  left: '35%',
+  position: 'relative',
   color: '#281414',
-  zIndex: 10,
-  padding: 0,
   fontWeight: 'bold',
+  padding: '0 0',
 };
 
 const SearchLocation = ({ panTo, currentNumber }) => {
@@ -57,7 +54,7 @@ const SearchLocation = ({ panTo, currentNumber }) => {
             setValue(e.target.value);
           }}
           disabled={!ready}
-          placeholder="주소를 입력하세요"
+          placeholder="🔎주소를 입력하세요"
           style={searchInput}
         />
         <ComboboxPopover>

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState, useImperativeHandle } from 'react';
 import { GoogleMap, useJsApiLoader, Marker, InfoWindow, Polyline } from '@react-google-maps/api';
 import Geocode from 'react-geocode';
 import styled from 'styled-components';
@@ -7,7 +7,8 @@ import '@reach/combobox/styles.css';
 import SearchLocation from '../searchMap/SearchLocation';
 import NamingLocationModal from './NamingLocationModal';
 import HowMuchModal from './HowMuchModal';
-import { current } from 'immer';
+import { useDispatch } from 'react-redux';
+import { ADD_LOCATIONSINFO } from '../../reducers/myRoute';
 
 const key = config.GOOGLEMAP_APIKEY;
 
@@ -31,7 +32,7 @@ const options = {
 
 const locate = {
   position: 'absolute',
-  top: '30px',
+  top: '10%',
   right: '5%',
   background: 'none',
   border: 'none',
@@ -56,6 +57,8 @@ const AddLocation = () => {
     googleMapsApiKey: config.GOOGLEMAP_APIKEY,
     libraries,
   });
+  
+  const dispatch = useDispatch();
 
   const [markers, setMarkers] = useState([]);
   const [selected, setSelected] = useState(null);
@@ -64,7 +67,7 @@ const AddLocation = () => {
   // 지도 center 위치 정의
   const [center, setCenter] = useState(null); // 지도 중심의 위도 경도
   const [clickLocationNumber, setClickLocationNumber] = useState([{}]); // 클릭한 장소의 위도 경도
-  const [clickLocationName, setClickLocationName] = useState({}); // 클릭한 장소의 이름
+  const [clickLocationAddress, setClickLocationAddress] = useState(''); // 클릭한 장소의 주소
   const mapRef = useRef();
 
   // 모달로 작성이 완료된 위치 배열
@@ -82,27 +85,29 @@ const AddLocation = () => {
     setHowMuchModal(!howMuchModal);
   }, [howMuchModal]);
 
-  const chilRef = useRef();
-  const [tempLocation, setTempLocation] = useState('');
+  const modalRef = useRef();
+  const [tempLocationName, setTempLocationName] = useState('');
 
   const getLocation = (location) => {
-    setTempLocation(location);
+    setTempLocationName(location);
   };
 
   const nextModal = useCallback(() => {
-    chilRef.current.send();
+    modalRef.current.send();
     namingModalToggle();
     howMuchModalToggle();
-  }, [tempLocation, namingModal, howMuchModal]);
+  }, [tempLocationName, namingModal, howMuchModal]);
 
   const getTimeAndMoney = (time, money) => {
     setLocationInfoArray((currentstate) => [
       ...currentstate,
       {
-        locationName: tempLocation,
-        requireTime: time,
+        locationName: tempLocationName,
+        locationAddress: clickLocationAddress,
+        requiredTime: time,
         requiredMoney: money,
-        latLng: clickLocationNumber,
+        lat: clickLocationNumber.lat,
+        lng: clickLocationNumber.lng,
       },
     ]);
     if (markers.length < 1) {
@@ -112,7 +117,7 @@ const AddLocation = () => {
           lat: clickLocationNumber.lat,
           lng: clickLocationNumber.lng,
           time: new Date(),
-          locaName: tempLocation,
+          locaName: tempLocationName,
         },
       ]);
     } else {
@@ -123,10 +128,10 @@ const AddLocation = () => {
           lat: clickLocationNumber.lat,
           lng: clickLocationNumber.lng,
           time: new Date(),
-          locaName: tempLocation,
+          locaName: tempLocationName,
         },
       ]);
-    }
+    };
     if (path.length < 1) {
       setPath(() => [
         {
@@ -142,15 +147,20 @@ const AddLocation = () => {
           lng: clickLocationNumber.lng,
         },
       ]);
-    }
+    };
   };
 
-  const finishModal = useCallback(() => {
-    chilRef.current.add();
+  const beforeModal = useCallback(() => {
     howMuchModalToggle();
-  }, [tempLocation, howMuchModal, locationInfoArray]);
+    namingModalToggle();
+  }, [tempLocationName, howMuchModal, locationInfoArray])
 
-  const deleteLocation = useCallback( () => {
+  const finishModal = useCallback(() => {
+    modalRef.current.finish();
+    howMuchModalToggle();
+  }, [tempLocationName, howMuchModal, locationInfoArray]);
+
+  const deleteLocation = useCallback(() => {
     // locationInfoArray 삭제, markers 삭제, polyline 연결
     setMarkers((current) => 
       current.filter((v) => (v.order) !== selected.order)
@@ -162,20 +172,14 @@ const AddLocation = () => {
       [ ...current.slice(0, selected.order - 1).concat(...current.slice(selected.order, current.length+1))]
     );
     setSelected(null);
-    
-    // markers.order 재구성 
-    // 어떻게 하면.. 모든 배열의 요소를 돌면서 order를 다시 정해줄 수 있을까?
-    // map 
-
-
   }, [selected, markers, locationInfoArray, path]);
 
-
   useEffect(() => {
-    console.log('locationInfoArray', locationInfoArray);
-    console.log('markers', markers);
-    console.log('path', path);
-  }, [markers, locationInfoArray, path]);
+    dispatch({
+      type: ADD_LOCATIONSINFO,
+      data: locationInfoArray,
+    });
+  }, [locationInfoArray]);
 
   // 위치의 위도와 경도를 문자로 반환해서 상태 저장
   const changeNumberToName = useCallback((lat, lng) => {
@@ -185,9 +189,9 @@ const AddLocation = () => {
         const splitFullAddress = fullAddress.split(' ');
         let address = ''; // 국가 이름 제외한 주소
         for (let i = 1; i < splitFullAddress.length; i++) {
-          address += (` ${splitFullAddress[i]}`);
+          address += (`${splitFullAddress[i]} `);
         }
-        setClickLocationName(address); // 문자 주소도 저장
+        setClickLocationAddress(address); // 문자 주소도 저장
         namingModalToggle(); // 클릭한 위치 명칭 보여주는 모달 창 실행
       },
       (error) => {
@@ -198,14 +202,12 @@ const AddLocation = () => {
 
   // 지도 클릭 시 해당 위치의 위도 경도 저장하고, 문자주소 저장 함수 실행
   const centerToClickLocation = useCallback((event) => {
-    console.log('array 개수', locationInfoArray.length);
     if (locationInfoArray.length > 8) { 
       return alert("경로는 9개까지 추가 가능합니다.");
     }
     // 위도 경도 상태 저장
     setClickLocationNumber({ lat: event.latLng.lat(), lng: event.latLng.lng() });
     // 문자 주소 저장 함수 실행
-    console.log(event.latLng.lat(), event.latLng.lng());
     changeNumberToName(event.latLng.lat(), event.latLng.lng());
   }, [locationInfoArray]);
 
@@ -227,18 +229,13 @@ const AddLocation = () => {
     );
   }, []);
 
-  // PolyLine Load
-  const onLoad = (polyline) => {
-    console.log('polyline: ', polyline);
-  };
-
   const option = {
     strokeColor: '#3DA8FF',
     strokeOpacity: 0.8,
-    strokeWeight: 2,
+    strokeWeight: 4,
     fillColor: '#3DA8FF',
     fillOpacity: 0.35,
-    clickable: true,
+    clickable: false,
     draggable: false,
     editable: false,
     visible: true,
@@ -274,9 +271,9 @@ const AddLocation = () => {
           {namingModal
           && (
           <NamingLocationModal
-            clickLocationName={clickLocationName}
+            clickLocationAddress={clickLocationAddress}
             namingModalToggle={namingModalToggle}
-            cref={chilRef}
+            modalRef={modalRef}
             getLocation={getLocation}
             nextModal={nextModal}
           />
@@ -284,9 +281,10 @@ const AddLocation = () => {
           {howMuchModal
           && (
           <HowMuchModal
-            cref={chilRef}
+          modalRef={modalRef}
             howMuchModalToggle={howMuchModalToggle}
             finishModal={finishModal}
+            beforeModal={beforeModal}
             getTimeAndMoney={getTimeAndMoney}
           />
           )}
@@ -323,7 +321,6 @@ const AddLocation = () => {
         {path
         && (
         <Polyline
-          onLoad={onLoad}
           path={path}
           options={option}
         />

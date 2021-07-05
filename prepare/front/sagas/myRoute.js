@@ -5,7 +5,7 @@ import { ADD_MYROUTE_FAILURE, ADD_MYROUTE_REQUEST, ADD_MYROUTE_SUCCESS,
   LOAD_TODAYROUTE_FAILURE, LOAD_TODAYROUTE_REQUEST, LOAD_TODAYROUTE_SUCCESS,
   UPLOAD_IMAGES_FAILURE, UPLOAD_IMAGES_REQUEST, UPLOAD_IMAGES_SUCCESS,
   LIKE_MYROUTE_REQUEST, LIKE_MYROUTE_SUCCESS, LIKE_MYROUTE_FAILURE,
-  UNLIKE_MYROUTE_REQUEST, UNLIKE_MYROUTE_SUCCESS, UNLIKE_MYROUTE_FAILURE, ADD_COMMENT_REQUEST, ADD_COMMENT_SUCCESS, ADD_COMMENT_FAILURE, LOAD_MYROUTEONE_REQUEST, LOAD_MYROUTEONE_SUCCESS, LOAD_MYROUTEONE_FAILURE } from '../reducers/myRoute';
+  UNLIKE_MYROUTE_REQUEST, UNLIKE_MYROUTE_SUCCESS, UNLIKE_MYROUTE_FAILURE, ADD_COMMENT_REQUEST, ADD_COMMENT_SUCCESS, ADD_COMMENT_FAILURE, LOAD_MYROUTEONE_REQUEST, LOAD_MYROUTEONE_SUCCESS, LOAD_MYROUTEONE_FAILURE, ADD_COMMENT_ONE_SUCCESS, ADD_COMMENT_ONE_REQUEST, ADD_COMMENT_ONE_FAILURE, LOAD_USER_MYROUTE_REQUEST, LOAD_USER_MYROUTE_SUCCESS, LOAD_USER_MYROUTE_FAILURE, LOAD_OTHER_USER_MYROUTE_REQUEST, LOAD_OTHER_USER_MYROUTE_SUCCESS, LOAD_OTHER_USER_MYROUTE_FAILURE, LOAD_HERE_MYROUTES_REQUEST, LOAD_HERE_MYROUTES_FAILURE, LOAD_HERE_MYROUTES_SUCCESS, UPDATE_MYROUTE_REQUEST, DELETE_MYROUTE_REQUEST, UPDATE_MYROUTE_SUCCESS, UPDATE_MYROUTE_FAILURE, DELETE_MYROUTE_SUCCESS, DELETE_MYROUTE_FAILURE } from '../reducers/myRoute';
 
 function loadTodayRouteAPI() {
   return axios.get('/myRoutes/todayMyRoute');
@@ -49,7 +49,7 @@ function* loadMyRoutes(action) {
 }
 
 function loadMyRouteOneAPI(data) {
-  return axios.get(`/myRoutes/${data}`);
+  return axios.get(`/myRoute/${data}`);
 }
 
 function* loadMyRouteOne(action) {
@@ -155,7 +155,6 @@ function addCommentAPI(data) {
 function* addComment(action) {
   try {
     const result = yield call(addCommentAPI, action.data);
-    console.log(result);
     yield put({
       type: ADD_COMMENT_SUCCESS,
       data: result.data,
@@ -167,6 +166,121 @@ function* addComment(action) {
     });
   }
 }
+
+function addCommentOneAPI(data) {
+  return axios.post(`/myRoute/${data.myRouteId}/comment`, data);// Post / post/1/comment
+}
+
+function* addCommentOne(action) {
+  try {
+    const result = yield call(addCommentOneAPI, action.data);
+    yield put({
+      type: ADD_COMMENT_ONE_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    yield put({
+      type: ADD_COMMENT_ONE_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
+function loadUserMyRouteAPI() {
+  return axios.get('/myRoutes/userMyRoute');
+}
+
+function* loadUserMyRoute(action) {
+  try {
+    const result = yield call(loadUserMyRouteAPI, action.data);
+    yield put({
+      type: LOAD_USER_MYROUTE_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    yield put({
+      type: LOAD_USER_MYROUTE_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
+function loadOtherUserMyRouteAPI(userId) {
+  return axios.get(`/myRoutes/${userId}`);
+}
+
+function* loadOtherUserMyRoute(action) {
+  try {
+    const result = yield call(loadOtherUserMyRouteAPI, action.data);
+    yield put({
+      type: LOAD_OTHER_USER_MYROUTE_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    yield put({
+      type: LOAD_OTHER_USER_MYROUTE_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
+function loadHereMyRoutesAPI(data) {
+  return axios.post('/myRoutes/location', data);
+}
+
+function* loadHereMyRoutes(action) {
+  try {
+    const result = yield call(loadHereMyRoutesAPI, action.data);
+    console.log(result);
+    yield put({
+      type: LOAD_HERE_MYROUTES_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    yield put({
+      type: LOAD_HERE_MYROUTES_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
+function deleteMyRouteAPI(data) {
+  return axios.delete(`/myRoute/${data}/myRoute`);
+}
+function* deleteMyRoute(action) {
+  try {
+    const result = yield call(deleteMyRouteAPI, action.data);
+    console.log(result);
+    yield put({
+      type: DELETE_MYROUTE_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    yield put({
+      type: DELETE_MYROUTE_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
+// function updateMyRouteAPI(data) {
+//   return axios.post('/myRoutes/location', data);
+// }
+// function* updateMyRoute(action) {
+//   try {
+//     const result = yield call(updateMyRouteAPI, action.data);
+//     console.log(result);
+//     yield put({
+//       type: UPDATE_MYROUTE_SUCCESS,
+//       data: result.data,
+//     });
+//   } catch (err) {
+//     yield put({
+//       type: UPDATE_MYROUTE_FAILURE,
+//       error: err.response.data,
+//     });
+//   }
+// }
 
 function* watchLoadTodayRoute() {
   yield takeEvery(LOAD_TODAYROUTE_REQUEST, loadTodayRoute);
@@ -200,6 +314,30 @@ function* watchAddComment() {
   yield takeEvery(ADD_COMMENT_REQUEST, addComment);
 }
 
+function* watchAddCommentOne() {
+  yield takeEvery(ADD_COMMENT_ONE_REQUEST, addCommentOne);
+}
+
+function* watchLoadUserMyRoute() {
+  yield takeEvery(LOAD_USER_MYROUTE_REQUEST, loadUserMyRoute);
+}
+
+function* watchLoadOtherUserMyRoute() {
+  yield takeEvery(LOAD_OTHER_USER_MYROUTE_REQUEST, loadOtherUserMyRoute);
+}
+
+function* watchLoadHereMyRoutes() {
+  yield takeEvery(LOAD_HERE_MYROUTES_REQUEST, loadHereMyRoutes);
+}
+
+function* watchDeleteMyRoute() {
+  yield takeEvery(DELETE_MYROUTE_REQUEST, deleteMyRoute);
+}
+
+// function* watchUpdateMyRoute() {
+//   yield takeEvery(UPDATE_MYROUTE_REQUEST, updateMyRoute);
+// }
+
 export default function* myRouteSaga() {
   yield all([
     fork(watchLoadTodayRoute),
@@ -210,5 +348,11 @@ export default function* myRouteSaga() {
     fork(watchLikeMyRoute),
     fork(watchUnLikeMyRoute),
     fork(watchAddComment),
+    fork(watchAddCommentOne),
+    fork(watchLoadUserMyRoute),
+    fork(watchLoadOtherUserMyRoute),
+    fork(watchLoadHereMyRoutes),
+    fork(watchDeleteMyRoute),
+   // fork(watchUpdateMyRoute),
   ]);
 }

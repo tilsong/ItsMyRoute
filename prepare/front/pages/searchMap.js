@@ -13,11 +13,11 @@ const searchMap = () => (
     </Head>
     <AppLayout>
       <div>
-        <Row gutter={8}>
-          <Col xs={24} md={8}>
+        <Row gutter={6}>
+          <Col xs={24} md={6}>
             <SideBar />
           </Col>
-          <Col xs={24} md={16}>
+          <Col xs={24} md={18}>
             <FullMap />
           </Col>
         </Row>

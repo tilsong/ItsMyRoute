@@ -20,14 +20,16 @@ const SNS = () => {
   return (
     <AppLayout>
       <TodayRoute />
-      <Row gutter={8}>
-        <Col xs={24} md={18}>
-          <TimeLine />
-        </Col>
-        <Col xs={24} md={6}>
-          <PopularityTags />
-        </Col>
-      </Row>
+      <div style={{ backgroundColor: '#f0f2f5' }}>
+        <Row gutter={8}>
+          <Col xs={24} md={18}>
+            <TimeLine />
+          </Col>
+          <Col xs={24} md={6}>
+            <PopularityTags />
+          </Col>
+        </Row>
+      </div>
       <Fab icon={<MdModeEdit />} alwaysShowTitle onClick={write} />
     </AppLayout>
   );

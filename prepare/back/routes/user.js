@@ -87,7 +87,6 @@ router.post('/logout', isLoggedIn, (req, res) => {
 // signUpAPI
 router.post('/', isNotLoggedIn, async (req, res, next) => { // POST /user/
   try {
-    console.log('1234');
     const exUser = await User.findOne({
       where: {
         email: req.body.email,
@@ -96,9 +95,7 @@ router.post('/', isNotLoggedIn, async (req, res, next) => { // POST /user/
     if (exUser) {
       return res.status(403).send('이미 사용 중인 아이디입니다.');
     }
-    console.log('2345');
     const hashedPassword = await bcrypt.hash(req.body.password, 12);
-    console.log(req.body.nickname);
     await User.create({
       email: req.body.email,
       phoneNumber: req.body.phoneNumber,
@@ -107,11 +104,63 @@ router.post('/', isNotLoggedIn, async (req, res, next) => { // POST /user/
       password: hashedPassword,
       active: true,
     });
-    console.log(req.body.nickname);
     res.status(201).send('ko');
   } catch (error) {
     console.error(error);
     next(error); // status 500
+  }
+});
+
+router.get('/:userId', async (req, res, next) => {
+  try {
+    const where = { id: req.params.userId};
+    const userInfo = await User.findOne({
+      where,
+      attributes: {
+        exclude: ['password']
+      },
+      include: [{
+        model: User,
+        as: 'Followings',
+        attributes: ['id'],
+      }, {
+        model: User,
+        as: 'Followers',
+        attributes: ['id'],
+      }]
+    })
+    res.status(200).json(userInfo);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+router.patch('/:userId/follow', isLoggedIn, async (req, res, next) => { // PATCH /user/1/follow
+  try {
+    const user = await User.findOne({ where: { id: req.params.userId }});
+    if (!user) {
+      res.status(403).send('팔로우 대상이 존재하지 않습니다.');
+    }
+    await user.addFollowers(req.user.id);
+    res.status(200).json({ UserId: parseInt(req.params.userId, 10) });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+router.delete('/:userId/follow', isLoggedIn, async (req, res, next) => { // DELETE /user/1/follow
+  try {
+    const user = await User.findOne({ where: { id: req.params.userId }});
+    if (!user) {
+      res.status(403).send('언팔로우 대상이 존재하지 않습니다.');
+    }
+    await user.removeFollowers(req.user.id);
+    res.status(200).json({ UserId: parseInt(req.params.userId, 10) });
+  } catch (error) {
+    console.error(error);
+    next(error);
   }
 });
 

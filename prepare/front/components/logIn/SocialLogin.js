@@ -1,38 +1,37 @@
 import React from 'react';
 import Link from 'next/link';
-import { RiKakaoTalkFill } from 'react-icons/ri';
-import { AiFillFacebook } from 'react-icons/ai';
+import { RiKakaoTalkFill, RiFacebookFill, RiGoogleFill } from 'react-icons/ri';
 import { FcGoogle } from 'react-icons/fc';
 import styled from 'styled-components';
 import Image from 'next/image';
 
-const Social = styled.div`
-    border: 1px solid black;
-`;
-
 const SocialLogin = () => (
-  <Social>
-    <Link href="http://localhost:3065/auth/kakao">
-      <a>
-        <RiKakaoTalkFill style={{ fontSize: '100' }} />
-      </a>
-    </Link>
-    <Link href="http://localhost:3065/auth/facebook">
-      <a>
-        <AiFillFacebook style={{ fontSize: '100' }} />
-      </a>
-    </Link>
-    <Link href="http://localhost:3065/auth/google">
-      <a>
-        <FcGoogle style={{ fontSize: '100' }} />
-      </a>
-    </Link>
-    <Link href="http://localhost:3065/auth/naver">
-      <a>
-        <Image src="/naver.png" width={90} height={90} style={{ padding: '10px' }} />
-      </a>
-    </Link>
-  </Social>
+  <div style={{ marginTop: '10px' }}>
+    <div style={{ position: 'relative', cursor: 'pointer' }}>
+      <div style={{display: 'flex', position: 'absolute', left: '50%', transform: `translateX(-50%)`}}>
+        <div>
+        <Link href="http://localhost:3065/auth/facebook" >
+          <Image src="/svg-facebook-icon-1.svg" width={150} height={150} />
+        </Link>
+        </div>
+        <div style={{ marginLeft: '10px'}}>
+        <Link href="http://localhost:3065/auth/naver" >
+          <Image src="/naver.png" width={150} height={150} />
+        </Link>
+        </div>
+        <div style={{ marginLeft: '10px'}}>
+        <Link href="http://localhost:3065/auth/kakao">
+          <Image src="/kakaotalk_black_logo_icon_147117.png" width={150} height={150} />
+        </Link>
+        </div>
+        <div style={{ marginLeft: '10px'}}> 
+        <Link href="http://localhost:3065/auth/google">
+          <Image src="/google-plus_icon-icons.com_66095.png" width={150} height={150} />
+        </Link>
+        </div>
+      </div>
+    </div>
+  </div>
 );
 
 export default SocialLogin;

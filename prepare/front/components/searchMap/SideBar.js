@@ -14,11 +14,8 @@ const SideBar = () => {
   const { panTo, currentNumber } = useSelector((state) => state.map);
 
   return (
-    <div style={{ border: '1px solid black', width: '500px', height: '680px', margin: '0 5px', padding: '5px' }}>
+    <div style={{ width: '100%', height: '100%', margin: '0 5px', padding: '5px', backgroundColor: '#F8F8F8' }}>
       {currentNumber && <SearchLocation panTo={panTo} currentNumber={currentNumber} />}
-      <BasicSide>
-        태그들 있는 자리
-      </BasicSide>
       <SideBarRouteList />
     </div>
   );

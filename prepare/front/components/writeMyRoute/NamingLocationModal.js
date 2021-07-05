@@ -21,40 +21,37 @@ const NamingModalDiv = styled.div`
   animation-duration: 0.5s;
   animation-timing-function: ease-in-out;
   animation-name: ${fadeIn};
-  border: 1px solid black;
-  width: 50vw;
+  border: 1px solid #D1E2FE;
+  border-radius : 20px;
+  width: 48vw;
   z-index: 10;
-  background-color: white;
-  padding: 10px;
+  background-color: #D1E2FE;
+  padding: 15px 10px 10px;
+  margin-left: 15px;
 `;
 
 const NamingLocationModal = ({
-  namingModalToggle, clickLocationName, getLocation, nextModal, cref
-}) => {
-
+  namingModalToggle, clickLocationAddress, getLocation, nextModal, modalRef }) => {
   const [selectLocation, onChangeSelectLocation] = useInput('');
 
-  useImperativeHandle(cref, () => ({
+  useImperativeHandle(modalRef, () => ({
     send() {
       if (selectLocation) {
         getLocation(selectLocation);
-      } else {
-        getLocation(clickLocationName);
       }
     },
   }));
   return (
     <NamingModalDiv>
       <GrFormClose onClick={namingModalToggle} style={{ cursor: 'pointer', position: 'absolute', right: '18px', fontSize: '40px' }} />
-      <div>
-        <span>클릭한 위치는</span>
-        <div style={{ fontSize: '20px' }}>[{clickLocationName} ] 의</div>
+      <div style={{ margin: '10px' }}>
+        <span style={{ marginBottom: '5px' }}>클릭한 위치는</span>
+        <div style={{ fontSize: '20px' }}>[{clickLocationAddress} ] 의</div>
       </div>
-      <div>
+      <div style={{ marginLeft: '10px' }}>
         <input value={selectLocation} onChange={onChangeSelectLocation} />입니다
       </div>
       <center>
-        <Button style={{ margin: '0 20px' }} onClick={namingModalToggle}>닫기</Button>
         <Button type="primary" onClick={nextModal} style={{ margin: '0 20px' }}>경로에 추가하기</Button>
       </center>
     </NamingModalDiv>
@@ -63,7 +60,10 @@ const NamingLocationModal = ({
 
 NamingLocationModal.propTypes = {
   namingModalToggle: PropTypes.func.isRequired,
-  clickLocationName: PropTypes.string.isRequired,
+  clickLocationAddress: PropTypes.string.isRequired,
+  getLocation: PropTypes.func.isRequired,
+  nextModal: PropTypes.func.isRequired,
+  modalRef: PropTypes.func.isRequired,
 };
 
 // onClick={locationName}

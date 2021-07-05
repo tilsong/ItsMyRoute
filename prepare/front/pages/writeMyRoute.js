@@ -6,7 +6,7 @@ import WriteMyRouteForm from '../components/writeMyRoute/WriteMyRouteForm';
 import AddLocation from '../components/writeMyRoute/AddLocation';
 
 const writeMyRoute = () => (
-  <>
+  <div>
     <Head>
       <title> 새 마이루트 작성 | It&#39;s My Route</title>
     </Head>
@@ -22,7 +22,7 @@ const writeMyRoute = () => (
         </Row>
       </div>
     </AppLayout>
-  </>
+  </div>
 );
 
 export default writeMyRoute;

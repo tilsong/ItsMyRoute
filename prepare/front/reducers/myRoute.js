@@ -5,7 +5,12 @@ export const initialState = {
   myRoutes: [],
   myRouteOne: null,
   imagePaths: [],
+  locationsInfo: null,
+  userMyRoute: null,
+  otherUserMyRoute: null,
+  modalData: null,
   hasMoreMyRoutes: true,
+  hereMyRoutes: null,
   loadTodayRouteLoading: false,
   loadTodayRouteDone: false,
   loadTodayRouteError: null,
@@ -30,6 +35,24 @@ export const initialState = {
   addCommentLoading: false,
   addCommentDone: false,
   addCommentError: null,
+  addCommentOneLoading: false,
+  addCommentOneDone: false,
+  addCommentOneError: null,
+  loadUserMyRouteLoading: false,
+  loadUserMyRouteDone: false,
+  loadUserMyRouteError: null,
+  loadOtherUserMyRouteLoading: false,
+  loadOtherUserMyRouteDone: false,
+  loadOtherUserMyRouteError: null,
+  loadHereMyRoutesLoading: false,
+  loadHereMyRoutesDone: false,
+  loadHereMyRoutesError: null,
+  updataMyRouteLoading: false,
+  updataMyRouteDone: false,
+  updataMyRouteError: null,
+  deleteMyRouteLoading: false,
+  deleteMyRouteDone: false,
+  deleteMyRouteError: null,
 };
 
 export const LOAD_TODAYROUTE_REQUEST = 'LOAD_TODAYROUTE_REQUEST';
@@ -52,6 +75,8 @@ export const UPLOAD_IMAGES_REQUEST = 'UPLOAD_IMAGES_REQUEST';
 export const UPLOAD_IMAGES_SUCCESS = 'UPLOAD_IMAGES_SUCCESS';
 export const UPLOAD_IMAGES_FAILURE = 'UPLOAD_IMAGES_FAILURE';
 
+export const ADD_LOCATIONSINFO = 'ADD_LOCATIONSINFO';
+
 export const REMOVE_IMAGE = 'REMOVE_IMAGE';
 
 export const LIKE_MYROUTE_REQUEST = 'LIKE_MYROUTE_REQUEST';
@@ -66,6 +91,32 @@ export const ADD_COMMENT_REQUEST = 'ADD_COMMENT_REQUEST';
 export const ADD_COMMENT_SUCCESS = 'ADD_COMMENT_SUCCESS';
 export const ADD_COMMENT_FAILURE = 'ADD_COMMENT_FAILURE';
 
+export const ADD_COMMENT_ONE_REQUEST = 'ADD_COMMENT_ONE_REQUEST';
+export const ADD_COMMENT_ONE_SUCCESS = 'ADD_COMMENT_ONE_SUCCESS';
+export const ADD_COMMENT_ONE_FAILURE = 'ADD_COMMENT_ONE_FAILURE';
+
+export const LOAD_MODAL_DATA = 'LOAD_MODAL_DATA';
+
+export const LOAD_USER_MYROUTE_REQUEST = 'LOAD_USER_MYROUTE_REQUEST';
+export const LOAD_USER_MYROUTE_SUCCESS = 'LOAD_USER_MYROUTE_SUCCESS';
+export const LOAD_USER_MYROUTE_FAILURE = 'LOAD_USER_MYROUTE_FAILURE';
+
+export const LOAD_OTHER_USER_MYROUTE_REQUEST = 'LOAD_OTHER_USER_MYROUTE_REQUEST';
+export const LOAD_OTHER_USER_MYROUTE_SUCCESS = 'LOAD_OTHER_USER_MYROUTE_SUCCESS';
+export const LOAD_OTHER_USER_MYROUTE_FAILURE = 'LOAD_OTHER_USER_MYROUTE_FAILURE';
+
+export const LOAD_HERE_MYROUTES_REQUEST = 'LOAD_HERE_MYROUTES_REQUEST';
+export const LOAD_HERE_MYROUTES_SUCCESS = 'LOAD_HERE_MYROUTES_SUCCESS';
+export const LOAD_HERE_MYROUTES_FAILURE = 'LOAD_HERE_MYROUTES_FAILURE';
+
+export const DELETE_MYROUTE_REQUEST = 'DELETE_MYROUTE_REQUEST';
+export const DELETE_MYROUTE_SUCCESS = 'DELETE_MYROUTE_SUCCESS';
+export const DELETE_MYROUTE_FAILURE = 'DELETE_MYROUTE_FAILURE';
+
+export const UPDATE_MYROUTE_REQUEST = 'UPDATE_MYROUTE_REQUEST';
+export const UPDATE_MYROUTE_SUCCESS = 'UPDATE_MYROUTE_SUCCESS';
+export const UPDATE_MYROUTE_FAILURE = 'UPDATE_MYROUTE_FAILURE';
+
 const reducer = (state = initialState, action) => produce(state, (draft) => {
   switch (action.type) {
     case LOAD_TODAYROUTE_REQUEST:
@@ -76,7 +127,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case LOAD_TODAYROUTE_SUCCESS:
       draft.loadTodayRouteLoading = false;
       draft.loadTodayRouteDone = true;
-      draft.todayMyroute = draft.todayMyroute.concat(action.data);
+      draft.todayMyroute = action.data;
       break;
     case LOAD_TODAYROUTE_FAILURE:
       draft.loadTodayRouteLoading = false;
@@ -97,10 +148,10 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       draft.loadMyRoutesLoading = false;
       draft.loadMyRoutesError = action.error;
       break;
-    case ADD_MYROUTE_REQUEST:
+    case LOAD_MYROUTEONE_REQUEST:
       draft.loadMyRouteOneLoading = true;
-      draft.loadMyRouteOneDone = false;
-      draft.loadMyRouteOneError = null;
+      draft.addMyRouteDone = false;
+      draft.addMyRoutetError = null;
       break;
     case LOAD_MYROUTEONE_SUCCESS:
       draft.loadMyRouteOneLoading = false;
@@ -111,10 +162,10 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       draft.loadMyRouteOneLoading = false;
       draft.loadMyRouteOneError = action.error;
       break;
-    case LOAD_MYROUTEONE_REQUEST:
+    case ADD_MYROUTE_REQUEST:
       draft.addMyRouteLoading = true;
-      draft.addMyRouteDone = false;
-      draft.addMyRoutetError = null;
+      draft.loadMyRouteOneDone = false;
+      draft.loadMyRouteOneError = null;
       break;
     case ADD_MYROUTE_SUCCESS:
       draft.addMyRouteLoading = false;
@@ -139,6 +190,9 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case UPLOAD_IMAGES_FAILURE:
       draft.uploadImagesLoading = false;
       draft.uploadImagesError = action.error;
+      break;
+    case ADD_LOCATIONSINFO:
+      draft.locationsInfo = action.data;
       break;
     case REMOVE_IMAGE:
       draft.imagePaths = draft.imagePaths.filter((v, i) => i !== action.data);
@@ -190,6 +244,91 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case ADD_COMMENT_FAILURE:
       draft.addCommentLoading = false;
       draft.addCommentError = action.error;
+      break;
+    case ADD_COMMENT_ONE_REQUEST:
+      draft.addCommentOneLoading = true;
+      draft.addCommentOneDone = false;
+      draft.addCommentOneError = null;
+      break;
+    case ADD_COMMENT_ONE_SUCCESS: {
+      const myRouteON = draft.myRouteOne;
+      myRouteON.Comments.unshift(action.data);
+      draft.addCommentOneLoading = false;
+      draft.addCommentOneDone = true;
+      break;
+    }
+    case ADD_COMMENT_ONE_FAILURE:
+      draft.addCommentOneLoading = false;
+      draft.addCommentOneError = action.error;
+      break;
+    case LOAD_MODAL_DATA:
+      draft.modalData = action.data;
+      break;
+    case LOAD_USER_MYROUTE_REQUEST:
+      draft.loadUserMyRouteLoading = true;
+      draft.loadUserMyRouteDone = false;
+      break;
+    case LOAD_USER_MYROUTE_SUCCESS:
+      draft.loadUserMyRouteLoading = false;
+      draft.loadUserMyRouteDone = true;
+      draft.userMyRoute = action.data;
+      break;
+    case LOAD_USER_MYROUTE_FAILURE:
+      draft.loadUserMyRouteLoading = false;
+      draft.loadUserMyRouteError = action.error;
+      break;
+    case LOAD_OTHER_USER_MYROUTE_REQUEST:
+      draft.loadOtherUserMyRouteLoading = true;
+      draft.loadOtherUserMyRouteDone = false;
+      break;
+    case LOAD_OTHER_USER_MYROUTE_SUCCESS:
+      draft.loadOtherUserMyRouteLoading = false;
+      draft.loadOtherUserMyRouteDone = true;
+      draft.otherUserMyRoute = action.data;
+      break;
+    case LOAD_OTHER_USER_MYROUTE_FAILURE:
+      draft.loadOtherUserMyRouteLoading = false;
+      draft.loadOtherUserMyRouteError = action.error;
+      break;
+    case LOAD_HERE_MYROUTES_REQUEST:
+      draft.loadHereMyRoutesLoading = true;
+      draft.loadHereMyRoutesDone = false;
+      draft.loadHereMyRoutesError = null;
+      break;
+    case LOAD_HERE_MYROUTES_SUCCESS:
+      draft.loadHereMyRoutesLoading = false;
+      draft.loadHereMyRoutesDone = true;
+      draft.hereMyRoutes = action.data;
+      break;
+    case LOAD_HERE_MYROUTES_FAILURE:
+      draft.loadHereMyRoutesLoading = false;
+      draft.loadHereMyRoutesError = action.error;
+      break;
+    case DELETE_MYROUTE_REQUEST:
+      draft.deleteMyRouteLoading = true;
+      draft.deleteMyRouteDone = false;
+      draft.deleteMyRouteError = null;
+      break;
+    case DELETE_MYROUTE_SUCCESS:
+      draft.deleteMyRouteLoading = false;
+      draft.deleteMyRouteDone = true;
+      break;
+    case DELETE_MYROUTE_FAILURE:
+      draft.deleteMyRouteLoading = false;
+      draft.deleteMyRouteError = action.error;
+      break;
+    case UPDATE_MYROUTE_REQUEST:
+      draft.updataMyRouteLoading = true;
+      draft.updataMyRouteDone = false;
+      draft.updataMyRouteError = null;
+      break;
+    case UPDATE_MYROUTE_SUCCESS:
+      draft.updataMyRouteLoading = false;
+      draft.updataMyRouteDone = true;
+      break;
+    case UPDATE_MYROUTE_FAILURE:
+      draft.updataMyRouteLoading = false;
+      draft.updataMyRouteError = action.error;
       break;
     default:
       break;

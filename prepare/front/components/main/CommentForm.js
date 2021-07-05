@@ -7,7 +7,7 @@ import { ADD_COMMENT_REQUEST } from '../../reducers/myRoute';
 
 const CommentForm = ({ myRoute }) => {
   const dispatch = useDispatch();
-  const id = useSelector((state) => state.user.me?.id);
+  const id = useSelector((state) => state.user);
   const { addCommentDone, addCommentLoading } = useSelector((state) => state.myRoute);
   const [commentText, onChangeCommentText, setCommentText] = useInput('');
   useEffect(() => {
@@ -17,7 +17,9 @@ const CommentForm = ({ myRoute }) => {
   }, [addCommentDone]);
 
   const onSubmitComment = useCallback(() => {
-    console.log(commentText + id + myRoute.id);
+    if (commentText === '') {
+      return;
+    }
     dispatch({
       type: ADD_COMMENT_REQUEST,
       data: { content: commentText, userId: id, myRouteId: myRoute.id },
