@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Router from 'next/router';
 import moment from 'moment';
@@ -8,6 +8,11 @@ const UserMyRoute = ({ myRoute }) => {
   const moveMyRouteOne = useCallback(() => {
     Router.push(`/myRoute/${myRoute.id}`);
   }, [] );
+  
+  useEffect(() => {
+    console.log(myRoute.title);
+  }, []);
+
   return (
     <div style={{ position: 'relative', border : '1px solid white', borderRadius: '10px', margin: '30px 20% 130px', height: '400px', backgroundColor: 'ivory', cursor: 'pointer' }} onClick={moveMyRouteOne}>
       { myRoute.MyRouteFiles[0]

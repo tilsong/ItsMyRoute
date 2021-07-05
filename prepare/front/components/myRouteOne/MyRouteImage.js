@@ -38,7 +38,7 @@ const MyRouteImage = ({ myRouteFiles }) => {
     <>
       <div >
         <div style={{display: 'inline-block', position: 'relative' }} onClick={onZoom}>
-          <img role="presentation" src={`${myRouteFiles[0].src}`} alt={`${myRouteFiles[0].src}`} width="50%" onClick={onZoom} style={{ }}/>
+          <img role="presentation" src={`${myRouteFiles[0].src}`} alt={`${myRouteFiles[0].src}`} width="50%" onClick={onZoom} />
           <img role="presentation" src={`${myRouteFiles[1].src}`} alt={`${myRouteFiles[0].src}`} style={{verticalAlign: 'middle', display: 'inline-block', filter: `blur(5px)`}} width="50%" onClick={onZoom} />
           <div style={{ textAlign: 'center', position: 'absolute', top: '42%', left: '70%', backgroundColor: 'black', color: 'white', padding: '10px', borderRadius: '10px' }}>
           <PlusOutlined />

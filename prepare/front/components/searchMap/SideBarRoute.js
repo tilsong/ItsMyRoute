@@ -60,7 +60,6 @@ const SideBarRoute = ({ myRoute, index, color, routeModalToggle }) => {
           && <img src={myRoute.MyRouteFiles[0].src} alt={myRoute.MyRouteFiles[0].src} width="100%" />}
       </div>
       <div className="contentFront" style={{ padding: '3px' }}>
-
         {content && content.substr(0, 60)}..
       </div>
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
