@@ -164,4 +164,41 @@ router.delete('/:userId/follow', isLoggedIn, async (req, res, next) => { // DELE
   }
 });
 
+// updateMyInfoAPI
+router.post('/updateInfo', isNotLoggedIn, async (req, res, next) => { // POST /user/
+  try {
+    let nicknameTemp = null;
+    let phoneNumberTemp = null;
+
+    const exUser = await User.findOne({
+      where: {
+        id: req.user.id,
+      }
+    });
+
+    if (req.body.nickname != exUser.nickname) {
+      nicknameTemp = req.body.nickname;
+    }
+    if (req.body.phoneNumber != exUser.phoneNumber) {
+      phoneNumberTemp = req.body.phoneNumber;
+    }
+    await User.update({
+      
+    })
+    // 이부분 업데이트 되어야 함.
+    // await User.create({           
+    //   email: req.body.email,
+    //   phoneNumber: req.body.phoneNumber,
+    //   name: req.body.name,
+    //   nickname: req.body.nickname,
+    //   password: hashedPassword,
+    //   active: true,
+    // });
+    res.status(201).send('ko');
+  } catch (error) {
+    console.error(error);
+    next(error); // status 500
+  }
+});
+
 module.exports = router;

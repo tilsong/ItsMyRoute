@@ -1,6 +1,6 @@
 import { all, call, fork, put, takeEvery, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
-import { FOLLOW_FAILURE, FOLLOW_REQUEST, FOLLOW_SUCCESS, LOAD_MY_INFO_FAILURE, LOAD_MY_INFO_REQUEST, LOAD_MY_INFO_SUCCESS, LOAD_USER_INFO_FAILURE, LOAD_USER_INFO_REQUEST, LOAD_USER_INFO_SUCCESS, LOG_IN_FAILURE, LOG_IN_REQUEST, LOG_IN_SUCCESS, LOG_OUT_FAILURE, LOG_OUT_REQUEST, LOG_OUT_SUCCESS, SIGN_UP_FAILURE, SIGN_UP_REQUEST, SIGN_UP_SUCCESS, UNFOLLOW_FAILURE, UNFOLLOW_REQUEST, UNFOLLOW_SUCCESS } from '../reducers/user';
+import { FOLLOW_FAILURE, FOLLOW_REQUEST, FOLLOW_SUCCESS, LOAD_MY_INFO_FAILURE, LOAD_MY_INFO_REQUEST, LOAD_MY_INFO_SUCCESS, LOAD_USER_INFO_FAILURE, LOAD_USER_INFO_REQUEST, LOAD_USER_INFO_SUCCESS, LOG_IN_FAILURE, LOG_IN_REQUEST, LOG_IN_SUCCESS, LOG_OUT_FAILURE, LOG_OUT_REQUEST, LOG_OUT_SUCCESS, SIGN_UP_FAILURE, SIGN_UP_REQUEST, SIGN_UP_SUCCESS, UNFOLLOW_FAILURE, UNFOLLOW_REQUEST, UNFOLLOW_SUCCESS, UPDATE_MY_INFO_FAILURE, UPDATE_MY_INFO_REQUEST, UPDATE_MY_INFO_SUCCESS } from '../reducers/user';
 
 function loadMyInfoAPI() {
   return axios.get('/user');
@@ -62,7 +62,6 @@ function* logOut() {
 }
 
 function signUpAPI(data) {
-  console.log('qwer');
   return axios.post('/user', data); // get, delete 요청은 데이터를 못넘김. 하지만 post, put patch는 가능
 }// http://localhost:3065/user
 
@@ -141,6 +140,26 @@ function* unfollow(action) {
   }
 }
 
+function updateMyInfoAPI(data) {
+  return axios.post('user/updateInfo', data);
+}
+
+function* updateMyInfo(action) {
+  try {
+    const result = yield call(updateMyInfoAPI, action.data);
+    yield put({
+      type: UPDATE_MY_INFO_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: UPDATE_MY_INFO_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
 function* watchLoadMyInfo() {
   yield takeEvery(LOAD_MY_INFO_REQUEST, loadMyInfo);
 }
@@ -168,6 +187,10 @@ function* watchUnfollow() {
   yield takeLatest(UNFOLLOW_REQUEST, unfollow);
 }
 
+function* watchUpdateMyInfo() {
+  yield takeEvery(UPDATE_MY_INFO_REQUEST, updateMyInfo);
+}
+
 export default function* userSaga() {
   yield all([
     fork(watchLoadMyInfo),
@@ -177,5 +200,6 @@ export default function* userSaga() {
     fork(watchLoadUserInfo),
     fork(watchFollow),
     fork(watchUnfollow),
+    fork(watchUpdateMyInfo),
   ]);
 }

@@ -5,12 +5,16 @@ import { END } from 'redux-saga';
 import { useSelector } from 'react-redux';
 import { BsGrid3X3GapFill, BsBookmarkFill } from 'react-icons/bs';
 import { BiCalendarAlt } from 'react-icons/bi';
+import { Fab } from 'react-tiny-fab';
+import Router from 'next/router';
+import { MdModeEdit } from 'react-icons/md';
 import AppLayout from '../components/common/AppLayout';
 import wrapper from '../store/configureStore';
 import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
 import MyInfo from '../components/myPage/MyInfo';
 import { LOAD_USER_MYROUTE_REQUEST } from '../reducers/myRoute';
 import UserMyRoute from '../components/myPage/UserMyRoute';
+import 'react-tiny-fab/dist/styles.css';
 
 const myPage = () => {
   const { me } = useSelector((state) => state.user);
@@ -34,6 +38,10 @@ const myPage = () => {
     setScraps(() => false);
     setCalendar(() => true);
   }, [posts, scraps, calendar]);
+
+  const write = useCallback(() => {
+    Router.push('/writeMyRoute');
+  }, []);
 
   return (
     <>
@@ -80,6 +88,7 @@ const myPage = () => {
               </div>
             )}
         </div>
+        <Fab icon={<MdModeEdit />} alwaysShowTitle onClick={write} />
       </AppLayout>
     </>
   );

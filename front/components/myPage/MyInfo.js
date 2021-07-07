@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Avatar, Button } from 'antd';
 import PropTypes from 'prop-types';
+import Router from 'next/router';
 
 const MyInfo = ({ me }) => {
-  const a = 1;
+  const updateUser = useCallback(() => {
+    Router.push('/updateUser');
+  }, []);
+
   return (
     <div className="userInfo" style={{ position: 'relative', borderRadius: '5px', border: '1px solid #f0f2f5', height: '200px', margin: '10px 18%' }}>
       <div style={{ position: 'absolute', left: '7%', top: '7%', bottom: '7%' }}>
@@ -14,7 +18,7 @@ const MyInfo = ({ me }) => {
           {me.nickname}
         </div>
         <div style={{ marginTop: '20px' }}>
-          <Button type="button" style={{ fontWeight: 'bold' }}>프로필 편집</Button>
+          <Button type="button" onClick={updateUser} style={{ fontWeight: 'bold' }}>프로필 편집</Button>
         </div>
       </div>
       <div className="relative" style={{ position: 'absolute', left: '33%', top: '46%', fontSize: '17px' }}>

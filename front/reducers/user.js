@@ -22,6 +22,9 @@ export const initialState = {
   unfollowLoading: false, // 언팔로우 시도중
   unfollowDone: false,
   unfollowError: null,
+  updateMyInfoLoading: false,
+  updateMyInfoDone: false,
+  updateMyInfoError: null,
   me: null,
   user: null,
 };
@@ -56,6 +59,10 @@ export const FOLLOW_FAILURE = 'FOLLOW_FAILURE';
 export const UNFOLLOW_REQUEST = 'UNFOLLOW_REQUEST';
 export const UNFOLLOW_SUCCESS = 'UNFOLLOW_SUCCESS';
 export const UNFOLLOW_FAILURE = 'UNFOLLOW_FAILURE';
+
+export const UPDATE_MY_INFO_REQUEST = 'UPDATE_MY_INFO_REQUEST';
+export const UPDATE_MY_INFO_SUCCESS = 'UPDATE_MY_INFO_SUCCESS';
+export const UPDATE_MY_INFO_FAILURE = 'UPDATE_MY_INFO_FAILURE';
 
 const reducer = (state = initialState, action) => produce(state, (draft) => {
   switch (action.type) {
@@ -155,6 +162,20 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case UNFOLLOW_FAILURE:
       draft.unfollowLoading = false;
       draft.unfollowError = action.error;
+      break;
+    case UPDATE_MY_INFO_REQUEST:
+      draft.updateMyInfoLoading = true;
+      draft.updateMyInfoDone = false;
+      draft.updateMyInfoError = null;
+      break;
+    case UPDATE_MY_INFO_SUCCESS:
+      draft.updateMyInfoLoading = false;
+      draft.updateMyInfoDone = true;
+      draft.me = action.data;
+      break;
+    case UPDATE_MY_INFO_FAILURE:
+      draft.updateMyInfoLoading = false;
+      draft.updateMyInfoError = action.error;
       break;
     default:
       break;

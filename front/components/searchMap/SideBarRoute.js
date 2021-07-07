@@ -5,7 +5,7 @@ import { MdTimelapse } from 'react-icons/md';
 import { useDispatch } from 'react-redux';
 import { LOAD_MODAL_DATA } from '../../reducers/myRoute';
 
-const SideBarRoute = ({ myRoute, index, color, routeModalToggle }) => {
+const SideBarRoute = ({ myRoute, index, color, routeModalOnToggle }) => {
   const dispatch = useDispatch();
 
   // 총 시간, 돈
@@ -41,7 +41,7 @@ const SideBarRoute = ({ myRoute, index, color, routeModalToggle }) => {
       type: LOAD_MODAL_DATA,
       data,
     });
-    routeModalToggle();
+    routeModalOnToggle();
   }, [totalMoney, totalTime]);
 
   return (
@@ -100,7 +100,7 @@ SideBarRoute.propTypes = {
   }).isRequired,
   index: PropTypes.number.isRequired,
   color: PropTypes.string.isRequired,
-  routeModalToggle: PropTypes.func.isRequired,
+  routeModalOnToggle: PropTypes.func.isRequired,
 };
 
 export default SideBarRoute;
