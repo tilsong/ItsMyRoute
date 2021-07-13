@@ -15,6 +15,8 @@
 
 일상이 여행이 되는 오늘, It's My Route.<br>
 <br>
+아래 링크를 클릭하시면 PPT로 포트폴리오에 대한 설명을 보실 수 있습니다.
+https://drive.google.com/file/d/1nlKcCE2Ucg1_YfBHHoh8rU6Ouj6fZBXw/view?usp=sharing
 
 ---
 
@@ -48,7 +50,7 @@
 
 프론트엔드: React, Redux, Redux-saga, Next
 
-백엔드: NodeJs, MySql, Amazon s3
+백엔드: NodeJs, Express.js, MySql, Amazon s3
 
 Api: GoogleMap Api 
 
