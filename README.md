@@ -1,6 +1,6 @@
 ### README 수정 2022.08.24
 ### 제작 시와의 라이브러리 버전 차이 및 노트북 분실로 인한 주요 실행 데이터 분실 등의 요인들로 인해 시현이 어려운 점 양해 부탁 드립니다.
-### 코드와 아래의 시현 화면(gif 파일)을 참고해주시면 감사하겠습니다.
+### 코드와 설명 PPT, 아래의 시현 화면(gif 파일)을 참고해주시면 감사하겠습니다.
 <br />
 <br />
 
@@ -22,7 +22,7 @@
 일상이 여행이 되는 오늘, It's My Route.<br>
 <br>
 아래 링크를 클릭하시면 PPT로 포트폴리오에 대한 설명을 보실 수 있습니다.
-https://drive.google.com/file/d/1nlKcCE2Ucg1_YfBHHoh8rU6Ouj6fZBXw/view?usp=sharing
+설명 PPT | https://drive.google.com/file/d/1nlKcCE2Ucg1_YfBHHoh8rU6Ouj6fZBXw/view?usp=sharing
 
 ---
 
